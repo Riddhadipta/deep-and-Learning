@@ -1,0 +1,2651 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>DeepLens — Interactive Deep Learning Academy</title>
+  <meta name="description" content="Master deep learning from first principles with interactive applications, live matrix math, real-world AI labs, and university course foundations.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&family=Outfit:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+  <!-- KaTeX for authentic, beautiful mathematical typesetting -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css" crossorigin="anonymous">
+</head>
+<body>
+
+  <!-- Ambient Background Effects -->
+  <div class="ambient-orb orb-violet"></div>
+  <div class="ambient-orb orb-cyan"></div>
+  <div class="ambient-orb orb-amber"></div>
+  <canvas id="particle-canvas"></canvas>
+
+  <!-- Navigation -->
+  <header class="navbar" id="app-header">
+    <div class="nav-container">
+      <div class="logo-group" id="logo">
+        <div class="logo-icon">
+          <svg width="32" height="32" viewBox="0 0 32 32" fill="none">
+            <circle cx="8" cy="8" r="3" fill="#a78bfa"/>
+            <circle cx="24" cy="8" r="3" fill="#67e8f9"/>
+            <circle cx="8" cy="24" r="3" fill="#a78bfa"/>
+            <circle cx="24" cy="24" r="3" fill="#67e8f9"/>
+            <circle cx="16" cy="16" r="4" fill="#f59e0b"/>
+            <line x1="8" y1="8" x2="16" y2="16" stroke="#a78bfa" stroke-width="1.5" opacity="0.6"/>
+            <line x1="24" y1="8" x2="16" y2="16" stroke="#67e8f9" stroke-width="1.5" opacity="0.6"/>
+            <line x1="8" y1="24" x2="16" y2="16" stroke="#a78bfa" stroke-width="1.5" opacity="0.6"/>
+            <line x1="24" y1="24" x2="16" y2="16" stroke="#67e8f9" stroke-width="1.5" opacity="0.6"/>
+          </svg>
+        </div>
+        <div>
+          <h1 class="logo-title">DeepLens</h1>
+          <span class="logo-subtitle">Deep Learning Foundations · LUH WS 26/27</span>
+        </div>
+      </div>
+
+      <nav class="nav-links" id="nav-links">
+        <a href="#" class="nav-link active" data-section="home">Home</a>
+        <a href="#" class="nav-link" data-section="modules">Modules</a>
+        <a href="#" class="nav-link" data-section="matrix-studio">Matrix &amp; Math</a>
+        <a href="#" class="nav-link" data-section="gradient-lab">Optimization &amp; Backprop</a>
+        <a href="#" class="nav-link" data-section="cnn-lab">CNNs &amp; Architectures</a>
+        <a href="#" class="nav-link" data-section="validation-lab">Validation</a>
+        <a href="#" class="nav-link" data-section="playground">Playground</a>
+        <a href="#" class="nav-link" data-section="quiz">Exam Quiz</a>
+      </nav>
+
+      <div class="nav-actions">
+        <div class="progress-pill" id="global-progress">
+          <div class="progress-ring">
+            <svg width="28" height="28" viewBox="0 0 28 28">
+              <circle cx="14" cy="14" r="11" stroke="rgba(255,255,255,0.1)" stroke-width="3" fill="none"/>
+              <circle cx="14" cy="14" r="11" stroke="url(#progress-grad)" stroke-width="3" fill="none"
+                      stroke-dasharray="69.1" stroke-dashoffset="69.1" stroke-linecap="round"
+                      id="progress-circle" transform="rotate(-90 14 14)"/>
+              <defs>
+                <linearGradient id="progress-grad" x1="0" y1="0" x2="1" y2="1">
+                  <stop offset="0%" stop-color="#a78bfa"/>
+                  <stop offset="100%" stop-color="#67e8f9"/>
+                </linearGradient>
+              </defs>
+            </svg>
+          </div>
+          <span class="progress-text" id="progress-text">0%</span>
+        </div>
+        <button class="btn-icon mobile-menu-btn" id="mobile-menu-btn" aria-label="Toggle menu">
+          <svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2">
+            <line x1="3" y1="5" x2="17" y2="5"/>
+            <line x1="3" y1="10" x2="17" y2="10"/>
+            <line x1="3" y1="15" x2="17" y2="15"/>
+          </svg>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Content -->
+  <main class="main-content" id="main-content">
+
+    <!-- ===================== HOME SECTION ===================== -->
+    <section class="section section-home active" id="section-home">
+      <!-- Course Affiliation Badge -->
+      <div class="academic-banner glass-panel">
+        <div class="academic-badge">
+          <span class="uni-logo">🏛️</span>
+          <div>
+            <div class="academic-title">Deep Learning Foundations · Winter Term 2026/27</div>
+            <div class="academic-sub">Leibniz Universität Hannover · Prof. Sandipan Sikdar · TA: Tobias Kalmbach</div>
+          </div>
+        </div>
+        <div class="academic-tags">
+          <span class="tag-pill">Supervised Learning</span>
+          <span class="tag-pill">Empirical Risk Minimization</span>
+          <span class="tag-pill">Linear vs Deep Models</span>
+        </div>
+      </div>
+
+      <div class="hero">
+        <div class="hero-content">
+          <div class="hero-badge">⚡ Interactive Deep Learning Academy</div>
+          <h2 class="hero-title">
+            From First Principles<br>
+            To <span class="text-gradient">Real-World AI</span>
+          </h2>
+          <p class="hero-description">
+            Experience deep learning through interactive matrix arithmetic, hands-on application labs (IOPaint inpainting, Atari Deep Q-learning, Halicin molecular graphs, flood prediction), and mathematical derivations.
+          </p>
+          <div class="hero-actions">
+            <button class="btn btn-primary btn-glow" id="btn-start-learning">
+              <span>Start Course</span>
+              <svg width="18" height="18" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M3 9h12M11 5l4 4-4 4"/>
+              </svg>
+            </button>
+            <button class="btn btn-ghost" id="btn-apps-hero">
+              <span>🚀 Try AI Apps Lab</span>
+            </button>
+            <button class="btn btn-ghost" id="btn-matrix-hero">
+              <span>📐 Matrix Studio</span>
+            </button>
+          </div>
+          <div class="hero-stats">
+            <div class="stat-item">
+              <span class="stat-value">14</span>
+              <span class="stat-label">Course Weeks</span>
+            </div>
+            <div class="stat-item">
+              <span class="stat-value">4</span>
+              <span class="stat-label">AI Revolution Labs</span>
+            </div>
+            <div class="stat-item">
+              <span class="stat-value">10</span>
+              <span class="stat-label">Activation Models</span>
+            </div>
+          </div>
+        </div>
+        <div class="hero-visual" id="hero-nn-canvas">
+          <canvas id="hero-network" width="500" height="400"></canvas>
+        </div>
+      </div>
+
+      <!-- Quick Feature Showcase Cards -->
+      <div class="feature-strip">
+        <div class="feature-card glass-panel" data-navigate="applications">
+          <div class="f-icon">🎨</div>
+          <h4>IOPaint &amp; Generative AI</h4>
+          <p>Draw masks to inpaint photos, watch Atari Deep RL play, and screen Halicin antibiotics.</p>
+          <span class="f-link">Open Apps Lab →</span>
+        </div>
+        <div class="feature-card glass-panel" data-navigate="matrix-studio">
+          <div class="f-icon">📐</div>
+          <h4>Matrix Forward Pass</h4>
+          <p>Step through $W \cdot x + b \to \phi(z)$, and prove why linear layers collapse.</p>
+          <span class="f-link">Open Matrix Studio →</span>
+        </div>
+        <div class="feature-card glass-panel" data-navigate="gradient-lab">
+          <div class="f-icon">📉</div>
+          <h4>Optimization &amp; ERM</h4>
+          <p>Interactive gradient derivation $W_j \leftarrow W_j - \alpha (f_W(x^i) - y^i)x_j^i$ with loss contours.</p>
+          <span class="f-link">Explore Optimization →</span>
+        </div>
+        <div class="feature-card glass-panel" data-navigate="validation-lab">
+          <div class="f-icon">📊</div>
+          <h4>K-Fold Cross-Validation</h4>
+          <p>Partition data into 10 folds, train on 9, test on 1, and benchmark variance.</p>
+          <span class="f-link">Test Validation →</span>
+        </div>
+      </div>
+
+      <!-- 14-Week University Curriculum Roadmap -->
+      <div class="syllabus-section">
+        <div class="syllabus-header">
+          <div>
+            <h3 class="section-heading" style="margin-top:0;">University Course Plan (14 Weeks)</h3>
+            <p class="section-desc">Hannover Deep Learning Foundations (WS 2026/27) Lecture Sequence</p>
+          </div>
+          <div class="exam-pill">
+            <span>📝 Pen &amp; Paper Final (90 min · 100 pts)</span>
+            <span>+ 4 Home Assignments (5 bonus pts)</span>
+          </div>
+        </div>
+        <div class="syllabus-timeline" id="syllabus-timeline">
+          <!-- Populated by JS -->
+        </div>
+      </div>
+
+      <!-- Standard Curriculum Overview Cards -->
+      <div class="curriculum-grid" id="curriculum-overview">
+        <h3 class="section-heading">Curriculum Modules</h3>
+        <div class="cards-row" id="curriculum-cards">
+          <!-- Generated by JS -->
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================== APPLICATIONS LAB (SLIDES 4-5) ===================== -->
+    <section class="section section-applications" id="section-applications">
+      <div class="modules-header">
+        <h2 class="section-title">The Deep Learning Revolution Lab</h2>
+        <p class="section-desc">Interactive applications inspired by lecture slides 4 &amp; 5 — from image inpainting to drug discovery.</p>
+      </div>
+
+      <!-- Tab bar for the 4 applications -->
+      <div class="app-tabs-bar">
+        <button class="app-tab active" data-app="inpainting">🎨 IOPaint (Image Inpainting)</button>
+        <button class="app-tab" data-app="atari">🕹️ Atari Deep RL (Pixels to Actions)</button>
+        <button class="app-tab" data-app="halicin">🧪 Halicin Molecular Discovery</button>
+        <button class="app-tab" data-app="flood">🌊 Flood Forecasting</button>
+      </div>
+
+      <!-- APP 1: IOPaint Image Inpainting -->
+      <div class="app-pane active" id="pane-inpainting">
+        <div class="lab-layout-2col">
+          <div class="lab-card glass-panel">
+            <div class="lab-card-header">
+              <h3>🎨 Interactive Inpainting Canvas</h3>
+              <span class="badge-source">Ref: Sanster/IOPaint (Slide 4)</span>
+            </div>
+            <p class="lab-instructions">
+              Paint a white mask over any object, person, or photobomber in the scene below, then click <strong>Run Neural Inpainting</strong> to watch generative deep learning reconstruct the missing pixels!
+            </p>
+            <div class="canvas-paint-wrapper">
+              <canvas id="inpaint-canvas" width="480" height="340"></canvas>
+            </div>
+            <div class="inpaint-toolbar">
+              <div class="brush-size-control">
+                <label>Brush Size: <span id="brush-size-val">24px</span></label>
+                <input type="range" id="brush-size" min="8" max="60" value="24">
+              </div>
+              <div class="inpaint-btns">
+                <button class="btn btn-primary btn-sm" id="btn-run-inpaint">✨ Run Inpainting</button>
+                <button class="btn btn-ghost btn-sm" id="btn-reset-inpaint">Reset Image</button>
+                <button class="btn btn-ghost btn-sm" id="btn-load-sample">Load New Scene</button>
+              </div>
+            </div>
+          </div>
+
+          <div class="lab-card glass-panel">
+            <div class="lab-card-header">
+              <h3>🧠 How Inpainting Works</h3>
+            </div>
+            <div class="theory-box">
+              <h4>Convolutional Generative Encoders</h4>
+              <p>Inpainting architectures (like DeepFill and Latent Diffusion) take an image $I$ and a binary mask $M \in \{0, 1\}$.</p>
+              <div class="formula">Input = [I \odot (1 - M), M]</div>
+              <p>The network learns contextual representations of surrounding textures, edges, and semantic content to synthesize plausible pixels inside the masked hole.</p>
+            </div>
+            <div class="metrics-mini">
+              <div class="m-box">
+                <span class="m-val" id="inpaint-mask-coverage">0%</span>
+                <span class="m-lbl">Mask Coverage</span>
+              </div>
+              <div class="m-box">
+                <span class="m-val" id="inpaint-status">Ready</span>
+                <span class="m-lbl">Inference Status</span>
+              </div>
+              <div class="m-box">
+                <span class="m-val">U-Net + Attention</span>
+                <span class="m-lbl">Architecture</span>
+              </div>
+            </div>
+            <div class="info-box" style="margin-top:16px;">
+              <div class="info-title">💡 Lecture Connection</div>
+              <p>Highlighted in Slide 4 as a hallmark of modern computer vision. Later in Week 3 (CNNs) and Week 7-9 (Generative Models: GANs &amp; Diffusion), you will understand the exact mathematical foundations behind this operation.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- APP 2: Atari Breakout Deep Q-Learning -->
+      <div class="app-pane" id="pane-atari">
+        <div class="lab-layout-2col">
+          <div class="lab-card glass-panel">
+            <div class="lab-card-header">
+              <h3>🕹️ Atari Breakout — Deep Q-Network</h3>
+              <span class="badge-source">Ref: Google DeepMind (Slide 4)</span>
+            </div>
+            <p class="lab-instructions">
+              Experience "From Pixels to Actions". Play manually or activate the trained DQN Agent. Watch the deep network compute real-time Q-values for every action!
+            </p>
+            <div class="canvas-arcade-wrapper">
+              <canvas id="atari-canvas" width="480" height="340"></canvas>
+            </div>
+            <div class="arcade-controls">
+              <div class="mode-toggles">
+                <button class="btn btn-sm btn-ghost active" id="btn-atari-human">👤 Human Play</button>
+                <button class="btn btn-sm btn-primary" id="btn-atari-ai">🤖 AI Agent (DQN)</button>
+              </div>
+              <button class="btn btn-sm btn-ghost" id="btn-atari-reset">Restart Game</button>
+            </div>
+          </div>
+
+          <div class="lab-card glass-panel">
+            <div class="lab-card-header">
+              <h3>⚡ Live Q-Value Action Probabilities</h3>
+            </div>
+            <p>The deep neural network accepts raw screen pixels and estimates the expected cumulative future reward $Q(s, a)$ for each action:</p>
+
+            <div class="q-val-bars">
+              <div class="q-bar-group">
+                <div class="q-bar-label"><span>LEFT</span><span id="q-val-left">0.00</span></div>
+                <div class="q-bar-track"><div class="q-bar-fill" id="q-fill-left" style="width: 33%;"></div></div>
+              </div>
+              <div class="q-bar-group">
+                <div class="q-bar-label"><span>STAY / NO-OP</span><span id="q-val-stay">0.00</span></div>
+                <div class="q-bar-track"><div class="q-bar-fill" id="q-fill-stay" style="width: 33%;"></div></div>
+              </div>
+              <div class="q-bar-group">
+                <div class="q-bar-label"><span>RIGHT</span><span id="q-val-right">0.00</span></div>
+                <div class="q-bar-track"><div class="q-bar-fill" id="q-fill-right" style="width: 33%;"></div></div>
+              </div>
+            </div>
+
+            <div class="formula" style="margin-top:16px;">Q(s, a) \leftarrow Q(s, a) + \alpha [r + \gamma \max_{a'} Q(s', a') - Q(s, a)]</div>
+
+            <div class="metrics-mini" style="margin-top:16px;">
+              <div class="m-box">
+                <span class="m-val" id="atari-score">0</span>
+                <span class="m-lbl">Current Score</span>
+              </div>
+              <div class="m-box">
+                <span class="m-val" id="atari-bricks-left">24</span>
+                <span class="m-lbl">Bricks Remaining</span>
+              </div>
+              <div class="m-box">
+                <span class="m-val" id="atari-selected-action">STAY</span>
+                <span class="m-lbl">Optimal Action</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- APP 3: Halicin Molecular Graph Explorer -->
+      <div class="app-pane" id="pane-halicin">
+        <div class="lab-layout-2col">
+          <div class="lab-card glass-panel">
+            <div class="lab-card-header">
+              <h3>🧪 Halicin Molecular Graph</h3>
+              <span class="badge-source">Antibiotic Discovery (Slide 5)</span>
+            </div>
+            <p class="lab-instructions">
+              Halicin was discovered using Graph Neural Networks (GNNs). Click atoms to inspect atomic features, or toggle chemical substituents to test antibacterial potency prediction!
+            </p>
+            <div class="molecule-viewer-wrapper">
+              <canvas id="molecule-canvas" width="480" height="320"></canvas>
+            </div>
+            <div class="molecule-actions">
+              <button class="btn btn-sm btn-ghost active" id="btn-halicin-native">Halicin Native</button>
+              <button class="btn btn-sm btn-ghost" id="btn-halicin-variant-a">Variant A (-NO2 removed)</button>
+              <button class="btn btn-sm btn-ghost" id="btn-halicin-variant-b">Variant B (Thiadiazole +S)</button>
+            </div>
+          </div>
+
+          <div class="lab-card glass-panel">
+            <div class="lab-card-header">
+              <h3>🧬 Graph Neural Network Scoring</h3>
+            </div>
+            <div class="gnn-score-display">
+              <div class="score-circle-mini">
+                <span class="score-huge" id="halicin-pred-score">0.96</span>
+                <span class="score-unit">Activity Prob</span>
+              </div>
+              <div class="score-meta">
+                <h4 id="halicin-verdict" style="color:var(--emerald-400);">POTENT ANTIBIOTIC</h4>
+                <p id="halicin-desc">Halicin disrupts bacterial electrochemical gradients across cell membranes, killing resistant Acinetobacter baumannii.</p>
+              </div>
+            </div>
+
+            <h4 style="margin-top:20px; font-size:0.9rem; color:var(--cyan-300);">Molecular Graph Representation (Weeks 5-6):</h4>
+            <div class="info-box">
+              <p><strong>Node Matrix $X$:</strong> 18 heavy atoms $\times$ 9 features (atomic number, valence, formal charge, hybridization, aromaticity).</p>
+              <p><strong>Adjacency Matrix $A$:</strong> Chemical covalent bond topology (single, double, aromatic).</p>
+              <p><strong>Message Passing:</strong> $h_v^{(k+1)} = \text{UPDATE}\left(h_v^{(k)}, \sum_{u \in \mathcal{N}(v)} \text{MESSAGE}(h_u^{(k)}, e_{uv})\right)$.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- APP 4: Flood Forecasting -->
+      <div class="app-pane" id="pane-flood">
+        <div class="lab-layout-2col">
+          <div class="lab-card glass-panel">
+            <div class="lab-card-header">
+              <h3>🌊 AI Flood Forecasting Simulator</h3>
+              <span class="badge-source">Hydrology AI (Slide 5)</span>
+            </div>
+            <p class="lab-instructions">
+              Adjust precipitation and catchment soil saturation to observe real-time neural river discharge forecasts over a 7-day horizon.
+            </p>
+            <div class="flood-controls">
+              <div class="slider-row">
+                <label>Catchment Rainfall (mm/24h): <span id="flood-rain-val">85 mm</span></label>
+                <input type="range" id="flood-rain" min="10" max="250" value="85">
+              </div>
+              <div class="slider-row">
+                <label>Upstream Soil Moisture: <span id="flood-soil-val">70%</span></label>
+                <input type="range" id="flood-soil" min="10" max="100" value="70">
+              </div>
+            </div>
+            <div class="flood-chart-wrapper">
+              <canvas id="flood-canvas" width="480" height="250"></canvas>
+            </div>
+          </div>
+
+          <div class="lab-card glass-panel">
+            <div class="lab-card-header">
+              <h3>📈 Forecast &amp; Early Warning System</h3>
+            </div>
+            <div class="flood-status-card" id="flood-alert-card">
+              <div class="alert-badge warning" id="flood-alert-badge">⚠️ MODERATE FLOOD RISK</div>
+              <p id="flood-alert-text">Peak river discharge is predicted to approach bankfull capacity at Day 3.</p>
+            </div>
+
+            <div class="metrics-mini" style="margin-top:20px;">
+              <div class="m-box">
+                <span class="m-val" id="flood-peak-discharge">480 m³/s</span>
+                <span class="m-lbl">Peak Discharge</span>
+              </div>
+              <div class="m-box">
+                <span class="m-val">Day +3</span>
+                <span class="m-lbl">Time to Peak</span>
+              </div>
+              <div class="m-box">
+                <span class="m-val" id="flood-lead-time">5 Days</span>
+                <span class="m-lbl">Early Warning Lead</span>
+              </div>
+            </div>
+
+            <div class="info-box" style="margin-top:20px;">
+              <div class="info-title">🛰️ Model Architecture</div>
+              <p>LSTM and Temporal Convolutional Networks (TCNs) trained on global gauge stations, ERA5 reanalysis weather data, and satellite precipitation inputs to provide free early warnings to vulnerable river communities.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+
+      <!-- TAB 4: Computation Graph & Backpropagation (Slides 10–11) -->
+      <div class="opt-pane" id="pane-backprop-graph">
+        <div class="lab-layout-2col">
+          <div class="lab-card glass-panel">
+            <div class="lab-card-header">
+              <h3>🔀 Slide 10: Interactive Computation Graph</h3>
+            </div>
+            <p>Slide 10 decomposes complex functions into a Directed Acyclic Graph (DAG) of elementary operations:</p>
+            <div class="formula">f(a, b) = (a + b) \cdot (b + 1)</div>
+            
+            <div class="graph-input-controls">
+              <div class="slider-group">
+                <label>Input $a$: <span id="bp-val-a">2.0</span></label>
+                <input type="range" id="bp-input-a" min="-5" max="5" step="0.5" value="2.0">
+              </div>
+              <div class="slider-group">
+                <label>Input $b$: <span id="bp-val-b">1.0</span></label>
+                <input type="range" id="bp-input-b" min="-5" max="5" step="0.5" value="1.0">
+              </div>
+            </div>
+
+            <!-- Visual Graph Nodes Container -->
+            <div class="computation-graph-visual" id="comp-graph-nodes">
+              <!-- Rendered by JS: Nodes for a, b, c=a+b, d=b+1, e=c*d -->
+            </div>
+
+            <div class="graph-actions-bar" style="margin-top:16px; display:flex; gap:10px;">
+              <button class="btn btn-sm btn-primary" id="btn-bp-forward">▶ Run Forward Pass</button>
+              <button class="btn btn-sm btn-ghost" id="btn-bp-backward">⬅ Run Reverse Backprop</button>
+            </div>
+          </div>
+
+          <div class="lab-card glass-panel">
+            <div class="lab-card-header">
+              <h3>Reverse-Mode Gradient Accumulation (Slide 10 &amp; 11)</h3>
+            </div>
+            <div class="step-trace-box" id="bp-gradient-trace">
+              <div class="trace-title">Analytical Backprop Derivation:</div>
+              <div class="trace-line" id="bp-trace-e">$$\frac{\partial e}{\partial e} = 1.0$$</div>
+              <div class="trace-line" id="bp-trace-cd">$$\frac{\partial e}{\partial c} = d = 2.0, \quad \frac{\partial e}{\partial d} = c = 3.0$$</div>
+              <div class="trace-line" id="bp-trace-a">$$\frac{\partial e}{\partial a} = \frac{\partial e}{\partial c} \frac{\partial c}{\partial a} = 2.0 \times 1 = 2.0$$</div>
+              <div class="trace-line highlight" id="bp-trace-b">
+                $$\frac{\partial e}{\partial b} = \frac{\partial e}{\partial c}\frac{\partial c}{\partial b} + \frac{\partial e}{\partial d}\frac{\partial d}{\partial b} = 2.0(1) + 3.0(1) = 5.0$$
+              </div>
+            </div>
+            <div class="info-box" style="margin-top:16px;">
+              <div class="info-title">💡 The Branch-Sum Rule (Slide 9 &amp; 10)</div>
+              <p>When variable $b$ fans out into multiple intermediate nodes ($c$ and $d$), its total derivative sums the contributions along all downstream paths: $\frac{\partial e}{\partial b} = \frac{\partial e}{\partial c}\frac{\partial c}{\partial b} + \frac{\partial e}{\partial d}\frac{\partial d}{\partial b}$.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- TAB 5: Optimizer Arena (Slides 18–25) -->
+      <div class="opt-pane" id="pane-optimizers-zoo">
+        <div class="lab-layout-2col">
+          <div class="lab-card glass-panel">
+            <div class="lab-card-header">
+              <h3>🏎️ Slides 18–25: Optimizer Arena on Ravine Landscape</h3>
+            </div>
+            <p>Compare how different optimizers traverse an anisotropic loss ravine $J(\theta_1, \theta_2) = 0.08 \theta_1^2 + 1.2 \theta_2^2$:</p>
+            
+            <div class="optimizer-select-bar">
+              <div class="pg-toggle-group" id="opt-selector-group">
+                <button class="pg-toggle active" data-opt="sgd">SGD</button>
+                <button class="pg-toggle" data-opt="momentum">Momentum ($\gamma=0.9$)</button>
+                <button class="pg-toggle" data-opt="nesterov">Nesterov (NAG)</button>
+                <button class="pg-toggle" data-opt="adagrad">Adagrad</button>
+                <button class="pg-toggle" data-opt="adam">Adam</button>
+              </div>
+            </div>
+
+            <canvas id="opt-arena-canvas" width="440" height="280"></canvas>
+
+            <div class="gd-btn-row" style="margin-top:12px;">
+              <button class="btn btn-sm btn-primary" id="btn-opt-run">▶ Start Optimizer</button>
+              <button class="btn btn-sm btn-ghost" id="btn-opt-reset">Reset</button>
+            </div>
+          </div>
+
+          <div class="lab-card glass-panel">
+            <div class="lab-card-header">
+              <h3>Mathematical Dynamics &amp; Mechanics</h3>
+            </div>
+            <div class="opt-math-card" id="opt-math-detail">
+              <!-- Dynamically populated with optimizer formulas and exam notes -->
+            </div>
+            <div class="mle-metrics-box" style="margin-top:16px;">
+              <div class="m-box">
+                <span class="m-val" id="opt-cur-iter">0</span>
+                <span class="m-lbl">Iterations</span>
+              </div>
+              <div class="m-box">
+                <span class="m-val" id="opt-cur-loss">0.000</span>
+                <span class="m-lbl">Current Loss</span>
+              </div>
+              <div class="m-box">
+                <span class="m-val" id="opt-status-text">Ready</span>
+                <span class="m-lbl">Status</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- TAB 6: Weight Init & Normalization (Slides 33–44) -->
+      <div class="opt-pane" id="pane-init-norm">
+        <div class="lab-layout-2col">
+          <div class="lab-card glass-panel">
+            <div class="lab-card-header">
+              <h3>⚖️ Slides 33–39: Variance Propagation Across 10 Layers</h3>
+            </div>
+            <p>Why do we need variance-preserving initialization? Observe what happens to signal variance across depth:</p>
+            
+            <div class="init-toggles-bar">
+              <label>Initialization Scheme:</label>
+              <div class="pg-toggle-group" id="init-scheme-group">
+                <button class="pg-toggle" data-init="zero">Zero Init</button>
+                <button class="pg-toggle" data-init="normal">Normal $\mathcal{N}(0, 1)$</button>
+                <button class="pg-toggle" data-init="xavier">Xavier / Glorot</button>
+                <button class="pg-toggle active" data-init="kaiming">Kaiming / He (ReLU)</button>
+              </div>
+            </div>
+
+            <canvas id="init-variance-canvas" width="440" height="240"></canvas>
+            <div class="init-verdict" id="init-verdict-box" style="margin-top:12px;"></div>
+          </div>
+
+          <div class="lab-card glass-panel">
+            <div class="lab-card-header">
+              <h3>📊 Slides 41–44: Batch Normalization vs Layer Normalization</h3>
+            </div>
+            <div class="norm-comparison-toggle">
+              <div class="pg-toggle-group" id="norm-mode-group">
+                <button class="pg-toggle active" data-norm="batch">Batch Normalization (Across Batch $N$)</button>
+                <button class="pg-toggle" data-norm="layer">Layer Normalization (Across Features $D$)</button>
+              </div>
+            </div>
+
+            <canvas id="norm-matrix-canvas" width="440" height="200"></canvas>
+
+            <div class="norm-math-box" id="norm-math-box" style="margin-top:12px;">
+              <!-- Populated by JS -->
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================== CNN & ARCHITECTURES LAB (LECTURE 3) ===================== -->
+    <section class="section section-cnn-lab" id="section-cnn-lab">
+      <div class="modules-header">
+        <h2 class="section-title">Convolutional Neural Networks &amp; Landmark Architectures</h2>
+        <p class="section-desc">Interactive filter sliding, output geometry &amp; parameter counters, Sobel kernels, and comparative deep-dives into AlexNet, VGG, GoogLeNet, and ResNet.</p>
+      </div>
+
+      <div class="app-tabs-bar">
+        <button class="cnn-tab active" data-tab="cnn-calc">📐 Slides 18–25: Spatial Geometry &amp; Parameter Counter</button>
+        <button class="cnn-tab" data-tab="cnn-architectures">🏛️ Slides 31–42: Landmark Architectures Deep-Dive</button>
+        <button class="cnn-tab" data-tab="cnn-kernel">🔍 Slides 6–15: 2D Convolution &amp; Sobel Edge Filters</button>
+      </div>
+
+      <!-- CNN TAB 1: Geometry & Learnable Parameter Counter -->
+      <div class="cnn-pane active" id="pane-cnn-calc">
+        <div class="lab-layout-2col">
+          <div class="lab-card glass-panel">
+            <div class="lab-card-header">
+              <h3>📐 Dimension &amp; Learnable Parameter Calculator (Slide 24 &amp; 25)</h3>
+            </div>
+            
+            <div class="cnn-preset-bar">
+              <span style="font-size:0.8rem; color:var(--text-secondary);">Load Slide Preset:</span>
+              <div class="pg-toggle-group" id="cnn-preset-group">
+                <button class="pg-toggle active" data-preset="slide24">Slide 24 Example</button>
+                <button class="pg-toggle" data-preset="alex-conv1">AlexNet Conv1</button>
+                <button class="pg-toggle" data-preset="alex-conv2">AlexNet Conv2</button>
+                <button class="pg-toggle" data-preset="vgg-conv">VGG $3\times 3$</button>
+              </div>
+            </div>
+
+            <div class="cnn-calc-inputs" style="display:grid; grid-template-columns: 1fr 1fr; gap:12px; margin:16px 0;">
+              <div class="slider-group">
+                <label>Input Channels $C_{\text{in}}$: <span id="lbl-cin">3</span></label>
+                <input type="number" id="inp-cin" min="1" max="1024" value="3" class="pg-num-input">
+              </div>
+              <div class="slider-group">
+                <label>Input Height $H = W$: <span id="lbl-hin">32</span></label>
+                <input type="number" id="inp-hin" min="1" max="512" value="32" class="pg-num-input">
+              </div>
+              <div class="slider-group">
+                <label>Filter Kernel $F$: <span id="lbl-f">5</span></label>
+                <input type="number" id="inp-f" min="1" max="31" step="2" value="5" class="pg-num-input">
+              </div>
+              <div class="slider-group">
+                <label>Output Filters $C_{\text{out}}$: <span id="lbl-cout">10</span></label>
+                <input type="number" id="inp-cout" min="1" max="1024" value="10" class="pg-num-input">
+              </div>
+              <div class="slider-group">
+                <label>Stride $S$: <span id="lbl-s">1</span></label>
+                <input type="number" id="inp-s" min="1" max="10" value="1" class="pg-num-input">
+              </div>
+              <div class="slider-group">
+                <label>Zero-Padding $P$: <span id="lbl-p">2</span></label>
+                <input type="number" id="inp-p" min="0" max="20" value="2" class="pg-num-input">
+              </div>
+            </div>
+
+            <div class="formula">
+              \begin{aligned}
+              H' &= \left\lfloor \frac{H - F + 2P}{S} \right\rfloor + 1 \\
+              \text{Params} &= C_{\text{out}} \times (F \times F \times C_{\text{in}} + 1)
+              \end{aligned}
+            </div>
+          </div>
+
+          <div class="lab-card glass-panel">
+            <div class="lab-card-header">
+              <h3>Output Volume &amp; Parameter Breakdown</h3>
+            </div>
+            <div class="cnn-result-summary" id="cnn-calc-results">
+              <!-- Dynamically populated -->
+            </div>
+            <canvas id="cnn-grid-preview" width="440" height="220" style="margin-top:16px;"></canvas>
+          </div>
+        </div>
+      </div>
+
+      <!-- CNN TAB 2: Landmark Architectures Deep-Dive -->
+      <div class="cnn-pane" id="pane-cnn-architectures">
+        <div class="app-tabs-bar" style="margin-bottom:16px;">
+          <button class="arch-tab active" data-arch="alexnet">AlexNet (2012)</button>
+          <button class="arch-tab" data-arch="vgg">VGGNet (2014)</button>
+          <button class="arch-tab" data-arch="googlenet">GoogLeNet / Inception (2014)</button>
+          <button class="arch-tab" data-arch="resnet">ResNet (2015)</button>
+        </div>
+
+        <div class="arch-content-container" id="arch-display-pane">
+          <!-- Dynamically populated by JS -->
+        </div>
+      </div>
+
+      <!-- CNN TAB 3: 2D Convolution & Sobel Kernel Interactive Grid -->
+      <div class="cnn-pane" id="pane-cnn-kernel">
+        <div class="lab-layout-2col">
+          <div class="lab-card glass-panel">
+            <div class="lab-card-header">
+              <h3>🔍 2D Convolution &amp; Sobel Edge Filters (Slide 15)</h3>
+            </div>
+            <div class="kernel-selector-bar">
+              <span style="font-size:0.8rem; color:var(--text-secondary);">Select Kernel:</span>
+              <div class="pg-toggle-group" id="kernel-select-group">
+                <button class="pg-toggle active" data-kernel="sobelX">Sobel $G_x$ (Vertical Edges)</button>
+                <button class="pg-toggle" data-kernel="sobelY">Sobel $G_y$ (Horizontal Edges)</button>
+                <button class="pg-toggle" data-kernel="blur">Box Blur</button>
+                <button class="pg-toggle" data-kernel="sharpen">Sharpen</button>
+              </div>
+            </div>
+
+            <canvas id="conv-kernel-canvas" width="440" height="280"></canvas>
+            <p class="note-text" style="margin-top:10px; font-size:0.8rem; color:var(--text-muted);">
+              Move your mouse over the canvas to slide the $3\times 3$ filter window across the input patch. Watch the live dot product $w^T x + b$ compute the output activation value!
+            </p>
+          </div>
+
+          <div class="lab-card glass-panel">
+            <div class="lab-card-header">
+              <h3>Live Dot-Product $w^T x + b$ Calculation</h3>
+            </div>
+            <div class="kernel-matrix-display" id="kernel-matrix-display">
+              <!-- Dynamically populated -->
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================== MATRIX & MATH STUDIO (SLIDES 25-33) ===================== -->
+    <section class="section section-matrix-studio" id="section-matrix-studio">
+      <div class="modules-header">
+        <h2 class="section-title">Matrix Forward Pass &amp; Linear Collapse Studio</h2>
+        <p class="section-desc">Interact with the exact matrix arithmetic from Slides 25–31 and prove why linear neural networks collapse.</p>
+      </div>
+
+      <!-- Studio Sub-nav -->
+      <div class="app-tabs-bar">
+        <button class="studio-tab active" data-tab="matrix-forward">📐 Slide 27: Forward Pass Matrix Engine</button>
+        <button class="studio-tab" data-tab="linear-collapse">💥 Slide 30: Linear Collapse Interactive Proof</button>
+        <button class="studio-tab" data-tab="activations-zoo">🧬 Slide 33: The 10 Activation Functions Zoo</button>
+      </div>
+
+      <!-- SUB 1: Matrix Forward Pass Engine -->
+      <div class="studio-pane active" id="pane-matrix-forward">
+        <div class="lab-card glass-panel">
+          <div class="studio-preset-bar">
+            <span>Select Architecture Mode:</span>
+            <button class="btn btn-sm btn-primary" id="btn-mode-5feat">Slide 27: 5-Input → 3-Hidden → 1-Output</button>
+            <button class="btn btn-sm btn-ghost" id="btn-mode-housing">Slide 11: Housing Price (Area + Beds)</button>
+            <button class="btn btn-sm btn-ghost" id="btn-rand-weights">🎲 Randomize Weights</button>
+          </div>
+
+          <!-- Interactive Matrix Flow Diagram -->
+          <div class="matrix-computation-grid" id="matrix-flow-container">
+            <!-- Rendered by JS: Input Vector x, Weight Matrix W, Bias b, Sum z, Activation phi, Output -->
+          </div>
+
+          <!-- Live Step-by-Step Matrix Math Inspection -->
+          <div class="step-math-breakdown glass-panel" id="matrix-step-detail">
+            <!-- Dynamic calculation lines -->
+          </div>
+        </div>
+      </div>
+
+      <!-- SUB 2: Linear Collapse Proof -->
+      <div class="studio-pane" id="pane-linear-collapse">
+        <div class="lab-layout-2col">
+          <div class="lab-card glass-panel">
+            <div class="lab-card-header">
+              <h3>💥 The Linear Collapse Theorem (Slide 30)</h3>
+            </div>
+            <p>What happens when you chain multiple linear layers without activation functions?</p>
+            <div class="formula">
+              \begin{aligned}
+              y &= W_3(W_2(W_1 x + b_1) + b_2) + b_3 \\
+              &= W_3 W_2 W_1 x + (W_3 W_2 b_1 + W_3 b_2 + b_3) \\
+              &= W_{\text{effective}} x + b_{\text{effective}}
+              \end{aligned}
+            </div>
+            <p class="lab-instructions">
+              Toggle between a <strong>Linear Activation ($\phi(a)=a$)</strong> and a <strong>Non-linear Activation (ReLU/Sigmoid)</strong>. Watch what the 3-layer network can separate!
+            </p>
+
+            <div class="collapse-toggles">
+              <label>Activation Function:</label>
+              <div class="pg-toggle-group" id="collapse-act-group">
+                <button class="pg-toggle active" data-act="linear">Linear $\phi(a)=a$ (Collapsed)</button>
+                <button class="pg-toggle" data-act="relu">ReLU $\max(0,a)$ (Deep Power)</button>
+                <button class="pg-toggle" data-act="tanh">Tanh</button>
+              </div>
+            </div>
+
+            <div class="collapsed-matrix-box" id="collapsed-matrix-result">
+              <!-- Dynamically shows Weff and beff computed product -->
+            </div>
+          </div>
+
+          <div class="lab-card glass-panel">
+            <div class="lab-card-header">
+              <h3>Interactive Decision Space</h3>
+            </div>
+            <canvas id="collapse-canvas" width="400" height="300"></canvas>
+            <div class="collapse-verdict" id="collapse-verdict">
+              <span class="status-pill status-warn">🚨 Linear Collapse Active</span>
+              <p>Because $\phi(a)=a$, the 3 layers mathematically collapsed into a single straight hyper-plane. It <strong>cannot</strong> solve non-linear problems like XOR!</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- SUB 3: 10 Activation Functions Zoo (Slide 33) -->
+      <div class="studio-pane" id="pane-activations-zoo">
+        <div class="lab-layout-2col">
+          <div class="lab-card glass-panel">
+            <div class="lab-card-header">
+              <h3>🧬 Slide 33: Activation Catalog</h3>
+            </div>
+            <div class="activation-pill-selector" id="act-zoo-selector">
+              <!-- Rendered by JS: Identity, Binary Step, Sigmoid, Tanh, ReLU, GELU, Softplus, ELU, SELU, Leaky ReLU -->
+            </div>
+            <div class="act-formula-card" id="act-formula-card">
+              <!-- Dynamic details -->
+            </div>
+          </div>
+
+          <div class="lab-card glass-panel">
+            <div class="lab-card-header">
+              <h3>Function $\phi(x)$ &amp; Derivative $\phi'(x)$ Plot</h3>
+            </div>
+            <canvas id="act-plot-canvas" width="440" height="300"></canvas>
+            <div class="act-plot-legend">
+              <span class="legend-item"><span class="dot violet"></span> Function $\phi(x)$</span>
+              <span class="legend-item"><span class="dot cyan"></span> Derivative $\phi'(x)$ (Gradient)</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+
+      <!-- TAB 4: Computation Graph & Backpropagation (Slides 10–11) -->
+      <div class="opt-pane" id="pane-backprop-graph">
+        <div class="lab-layout-2col">
+          <div class="lab-card glass-panel">
+            <div class="lab-card-header">
+              <h3>🔀 Slide 10: Interactive Computation Graph</h3>
+            </div>
+            <p>Slide 10 decomposes complex functions into a Directed Acyclic Graph (DAG) of elementary operations:</p>
+            <div class="formula">f(a, b) = (a + b) \cdot (b + 1)</div>
+            
+            <div class="graph-input-controls">
+              <div class="slider-group">
+                <label>Input $a$: <span id="bp-val-a">2.0</span></label>
+                <input type="range" id="bp-input-a" min="-5" max="5" step="0.5" value="2.0">
+              </div>
+              <div class="slider-group">
+                <label>Input $b$: <span id="bp-val-b">1.0</span></label>
+                <input type="range" id="bp-input-b" min="-5" max="5" step="0.5" value="1.0">
+              </div>
+            </div>
+
+            <!-- Visual Graph Nodes Container -->
+            <div class="computation-graph-visual" id="comp-graph-nodes">
+              <!-- Rendered by JS: Nodes for a, b, c=a+b, d=b+1, e=c*d -->
+            </div>
+
+            <div class="graph-actions-bar" style="margin-top:16px; display:flex; gap:10px;">
+              <button class="btn btn-sm btn-primary" id="btn-bp-forward">▶ Run Forward Pass</button>
+              <button class="btn btn-sm btn-ghost" id="btn-bp-backward">⬅ Run Reverse Backprop</button>
+            </div>
+          </div>
+
+          <div class="lab-card glass-panel">
+            <div class="lab-card-header">
+              <h3>Reverse-Mode Gradient Accumulation (Slide 10 &amp; 11)</h3>
+            </div>
+            <div class="step-trace-box" id="bp-gradient-trace">
+              <div class="trace-title">Analytical Backprop Derivation:</div>
+              <div class="trace-line" id="bp-trace-e">$$\frac{\partial e}{\partial e} = 1.0$$</div>
+              <div class="trace-line" id="bp-trace-cd">$$\frac{\partial e}{\partial c} = d = 2.0, \quad \frac{\partial e}{\partial d} = c = 3.0$$</div>
+              <div class="trace-line" id="bp-trace-a">$$\frac{\partial e}{\partial a} = \frac{\partial e}{\partial c} \frac{\partial c}{\partial a} = 2.0 \times 1 = 2.0$$</div>
+              <div class="trace-line highlight" id="bp-trace-b">
+                $$\frac{\partial e}{\partial b} = \frac{\partial e}{\partial c}\frac{\partial c}{\partial b} + \frac{\partial e}{\partial d}\frac{\partial d}{\partial b} = 2.0(1) + 3.0(1) = 5.0$$
+              </div>
+            </div>
+            <div class="info-box" style="margin-top:16px;">
+              <div class="info-title">💡 The Branch-Sum Rule (Slide 9 &amp; 10)</div>
+              <p>When variable $b$ fans out into multiple intermediate nodes ($c$ and $d$), its total derivative sums the contributions along all downstream paths: $\frac{\partial e}{\partial b} = \frac{\partial e}{\partial c}\frac{\partial c}{\partial b} + \frac{\partial e}{\partial d}\frac{\partial d}{\partial b}$.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- TAB 5: Optimizer Arena (Slides 18–25) -->
+      <div class="opt-pane" id="pane-optimizers-zoo">
+        <div class="lab-layout-2col">
+          <div class="lab-card glass-panel">
+            <div class="lab-card-header">
+              <h3>🏎️ Slides 18–25: Optimizer Arena on Ravine Landscape</h3>
+            </div>
+            <p>Compare how different optimizers traverse an anisotropic loss ravine $J(\theta_1, \theta_2) = 0.08 \theta_1^2 + 1.2 \theta_2^2$:</p>
+            
+            <div class="optimizer-select-bar">
+              <div class="pg-toggle-group" id="opt-selector-group">
+                <button class="pg-toggle active" data-opt="sgd">SGD</button>
+                <button class="pg-toggle" data-opt="momentum">Momentum ($\gamma=0.9$)</button>
+                <button class="pg-toggle" data-opt="nesterov">Nesterov (NAG)</button>
+                <button class="pg-toggle" data-opt="adagrad">Adagrad</button>
+                <button class="pg-toggle" data-opt="adam">Adam</button>
+              </div>
+            </div>
+
+            <canvas id="opt-arena-canvas" width="440" height="280"></canvas>
+
+            <div class="gd-btn-row" style="margin-top:12px;">
+              <button class="btn btn-sm btn-primary" id="btn-opt-run">▶ Start Optimizer</button>
+              <button class="btn btn-sm btn-ghost" id="btn-opt-reset">Reset</button>
+            </div>
+          </div>
+
+          <div class="lab-card glass-panel">
+            <div class="lab-card-header">
+              <h3>Mathematical Dynamics &amp; Mechanics</h3>
+            </div>
+            <div class="opt-math-card" id="opt-math-detail">
+              <!-- Dynamically populated with optimizer formulas and exam notes -->
+            </div>
+            <div class="mle-metrics-box" style="margin-top:16px;">
+              <div class="m-box">
+                <span class="m-val" id="opt-cur-iter">0</span>
+                <span class="m-lbl">Iterations</span>
+              </div>
+              <div class="m-box">
+                <span class="m-val" id="opt-cur-loss">0.000</span>
+                <span class="m-lbl">Current Loss</span>
+              </div>
+              <div class="m-box">
+                <span class="m-val" id="opt-status-text">Ready</span>
+                <span class="m-lbl">Status</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- TAB 6: Weight Init & Normalization (Slides 33–44) -->
+      <div class="opt-pane" id="pane-init-norm">
+        <div class="lab-layout-2col">
+          <div class="lab-card glass-panel">
+            <div class="lab-card-header">
+              <h3>⚖️ Slides 33–39: Variance Propagation Across 10 Layers</h3>
+            </div>
+            <p>Why do we need variance-preserving initialization? Observe what happens to signal variance across depth:</p>
+            
+            <div class="init-toggles-bar">
+              <label>Initialization Scheme:</label>
+              <div class="pg-toggle-group" id="init-scheme-group">
+                <button class="pg-toggle" data-init="zero">Zero Init</button>
+                <button class="pg-toggle" data-init="normal">Normal $\mathcal{N}(0, 1)$</button>
+                <button class="pg-toggle" data-init="xavier">Xavier / Glorot</button>
+                <button class="pg-toggle active" data-init="kaiming">Kaiming / He (ReLU)</button>
+              </div>
+            </div>
+
+            <canvas id="init-variance-canvas" width="440" height="240"></canvas>
+            <div class="init-verdict" id="init-verdict-box" style="margin-top:12px;"></div>
+          </div>
+
+          <div class="lab-card glass-panel">
+            <div class="lab-card-header">
+              <h3>📊 Slides 41–44: Batch Normalization vs Layer Normalization</h3>
+            </div>
+            <div class="norm-comparison-toggle">
+              <div class="pg-toggle-group" id="norm-mode-group">
+                <button class="pg-toggle active" data-norm="batch">Batch Normalization (Across Batch $N$)</button>
+                <button class="pg-toggle" data-norm="layer">Layer Normalization (Across Features $D$)</button>
+              </div>
+            </div>
+
+            <canvas id="norm-matrix-canvas" width="440" height="200"></canvas>
+
+            <div class="norm-math-box" id="norm-math-box" style="margin-top:12px;">
+              <!-- Populated by JS -->
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================== CNN & ARCHITECTURES LAB (LECTURE 3) ===================== -->
+    <section class="section section-cnn-lab" id="section-cnn-lab">
+      <div class="modules-header">
+        <h2 class="section-title">Convolutional Neural Networks &amp; Landmark Architectures</h2>
+        <p class="section-desc">Interactive filter sliding, output geometry &amp; parameter counters, Sobel kernels, and comparative deep-dives into AlexNet, VGG, GoogLeNet, and ResNet.</p>
+      </div>
+
+      <div class="app-tabs-bar">
+        <button class="cnn-tab active" data-tab="cnn-calc">📐 Slides 18–25: Spatial Geometry &amp; Parameter Counter</button>
+        <button class="cnn-tab" data-tab="cnn-architectures">🏛️ Slides 31–42: Landmark Architectures Deep-Dive</button>
+        <button class="cnn-tab" data-tab="cnn-kernel">🔍 Slides 6–15: 2D Convolution &amp; Sobel Edge Filters</button>
+      </div>
+
+      <!-- CNN TAB 1: Geometry & Learnable Parameter Counter -->
+      <div class="cnn-pane active" id="pane-cnn-calc">
+        <div class="lab-layout-2col">
+          <div class="lab-card glass-panel">
+            <div class="lab-card-header">
+              <h3>📐 Dimension &amp; Learnable Parameter Calculator (Slide 24 &amp; 25)</h3>
+            </div>
+            
+            <div class="cnn-preset-bar">
+              <span style="font-size:0.8rem; color:var(--text-secondary);">Load Slide Preset:</span>
+              <div class="pg-toggle-group" id="cnn-preset-group">
+                <button class="pg-toggle active" data-preset="slide24">Slide 24 Example</button>
+                <button class="pg-toggle" data-preset="alex-conv1">AlexNet Conv1</button>
+                <button class="pg-toggle" data-preset="alex-conv2">AlexNet Conv2</button>
+                <button class="pg-toggle" data-preset="vgg-conv">VGG $3\times 3$</button>
+              </div>
+            </div>
+
+            <div class="cnn-calc-inputs" style="display:grid; grid-template-columns: 1fr 1fr; gap:12px; margin:16px 0;">
+              <div class="slider-group">
+                <label>Input Channels $C_{\text{in}}$: <span id="lbl-cin">3</span></label>
+                <input type="number" id="inp-cin" min="1" max="1024" value="3" class="pg-num-input">
+              </div>
+              <div class="slider-group">
+                <label>Input Height $H = W$: <span id="lbl-hin">32</span></label>
+                <input type="number" id="inp-hin" min="1" max="512" value="32" class="pg-num-input">
+              </div>
+              <div class="slider-group">
+                <label>Filter Kernel $F$: <span id="lbl-f">5</span></label>
+                <input type="number" id="inp-f" min="1" max="31" step="2" value="5" class="pg-num-input">
+              </div>
+              <div class="slider-group">
+                <label>Output Filters $C_{\text{out}}$: <span id="lbl-cout">10</span></label>
+                <input type="number" id="inp-cout" min="1" max="1024" value="10" class="pg-num-input">
+              </div>
+              <div class="slider-group">
+                <label>Stride $S$: <span id="lbl-s">1</span></label>
+                <input type="number" id="inp-s" min="1" max="10" value="1" class="pg-num-input">
+              </div>
+              <div class="slider-group">
+                <label>Zero-Padding $P$: <span id="lbl-p">2</span></label>
+                <input type="number" id="inp-p" min="0" max="20" value="2" class="pg-num-input">
+              </div>
+            </div>
+
+            <div class="formula">
+              \begin{aligned}
+              H' &= \left\lfloor \frac{H - F + 2P}{S} \right\rfloor + 1 \\
+              \text{Params} &= C_{\text{out}} \times (F \times F \times C_{\text{in}} + 1)
+              \end{aligned}
+            </div>
+          </div>
+
+          <div class="lab-card glass-panel">
+            <div class="lab-card-header">
+              <h3>Output Volume &amp; Parameter Breakdown</h3>
+            </div>
+            <div class="cnn-result-summary" id="cnn-calc-results">
+              <!-- Dynamically populated -->
+            </div>
+            <canvas id="cnn-grid-preview" width="440" height="220" style="margin-top:16px;"></canvas>
+          </div>
+        </div>
+      </div>
+
+      <!-- CNN TAB 2: Landmark Architectures Deep-Dive -->
+      <div class="cnn-pane" id="pane-cnn-architectures">
+        <div class="app-tabs-bar" style="margin-bottom:16px;">
+          <button class="arch-tab active" data-arch="alexnet">AlexNet (2012)</button>
+          <button class="arch-tab" data-arch="vgg">VGGNet (2014)</button>
+          <button class="arch-tab" data-arch="googlenet">GoogLeNet / Inception (2014)</button>
+          <button class="arch-tab" data-arch="resnet">ResNet (2015)</button>
+        </div>
+
+        <div class="arch-content-container" id="arch-display-pane">
+          <!-- Dynamically populated by JS -->
+        </div>
+      </div>
+
+      <!-- CNN TAB 3: 2D Convolution & Sobel Kernel Interactive Grid -->
+      <div class="cnn-pane" id="pane-cnn-kernel">
+        <div class="lab-layout-2col">
+          <div class="lab-card glass-panel">
+            <div class="lab-card-header">
+              <h3>🔍 2D Convolution &amp; Sobel Edge Filters (Slide 15)</h3>
+            </div>
+            <div class="kernel-selector-bar">
+              <span style="font-size:0.8rem; color:var(--text-secondary);">Select Kernel:</span>
+              <div class="pg-toggle-group" id="kernel-select-group">
+                <button class="pg-toggle active" data-kernel="sobelX">Sobel $G_x$ (Vertical Edges)</button>
+                <button class="pg-toggle" data-kernel="sobelY">Sobel $G_y$ (Horizontal Edges)</button>
+                <button class="pg-toggle" data-kernel="blur">Box Blur</button>
+                <button class="pg-toggle" data-kernel="sharpen">Sharpen</button>
+              </div>
+            </div>
+
+            <canvas id="conv-kernel-canvas" width="440" height="280"></canvas>
+            <p class="note-text" style="margin-top:10px; font-size:0.8rem; color:var(--text-muted);">
+              Move your mouse over the canvas to slide the $3\times 3$ filter window across the input patch. Watch the live dot product $w^T x + b$ compute the output activation value!
+            </p>
+          </div>
+
+          <div class="lab-card glass-panel">
+            <div class="lab-card-header">
+              <h3>Live Dot-Product $w^T x + b$ Calculation</h3>
+            </div>
+            <div class="kernel-matrix-display" id="kernel-matrix-display">
+              <!-- Dynamically populated -->
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================== OPTIMIZATION & ERM LAB (SLIDES 14-20, 35-40) ===================== -->
+    <section class="section section-gradient-lab" id="section-gradient-lab">
+      <div class="modules-header">
+        <h2 class="section-title">Optimization, Losses &amp; Empirical Risk Minimization</h2>
+        <p class="section-desc">Derive gradients, compare Squared Error vs Cross-Entropy, and step through Slide 39's gradient descent algorithm.</p>
+      </div>
+
+      <div class="app-tabs-bar">
+        <button class="opt-tab active" data-tab="gd-engine">📉 Slide 39: Gradient Descent Engine</button>
+        <button class="opt-tab" data-tab="loss-mle">🎯 Slides 17–20: Maximum Likelihood &amp; BCE</button>
+        <button class="opt-tab" data-tab="softmax-multiclass">🐱 Slides 34–36: Softmax Multi-Class</button>
+        <button class="opt-tab" data-tab="backprop-graph">🔀 Slides 10–11: Computation Graph &amp; Backprop</button>
+        <button class="opt-tab" data-tab="optimizers-zoo">🏎️ Slides 18–25: Optimizer Arena (Adam/NAG)</button>
+        <button class="opt-tab" data-tab="init-norm">⚖️ Slides 33–44: Inits &amp; Normalization</button>
+      </div>
+
+      <!-- TAB 1: Gradient Descent Step-by-Step Engine -->
+      <div class="opt-pane active" id="pane-gd-engine">
+        <div class="lab-layout-2col">
+          <div class="lab-card glass-panel">
+            <div class="lab-card-header">
+              <h3>Linear Regression with Housing Data (Slide 11 &amp; 39)</h3>
+            </div>
+            <div class="formula">
+              \begin{aligned}
+              \frac{\partial}{\partial W_j} L(W) &= (f_W(x^i) - y^i) x_j^i \\
+              W_j &\leftarrow W_j - \alpha (f_W(x^i) - y^i) x_j^i
+              \end{aligned}
+            </div>
+            <canvas id="gd-scatter-canvas" width="440" height="280"></canvas>
+
+            <div class="gd-controls-bar">
+              <div class="slider-group">
+                <label>Learning Rate $\alpha$: <span id="gd-alpha-val">0.05</span></label>
+                <input type="range" id="gd-alpha" min="0.005" max="0.2" step="0.005" value="0.05">
+              </div>
+              <div class="gd-btn-row">
+                <button class="btn btn-sm btn-primary" id="btn-gd-step">👉 Single Step GD</button>
+                <button class="btn btn-sm btn-ghost" id="btn-gd-auto">▶ Auto Iterate</button>
+                <button class="btn btn-sm btn-ghost" id="btn-gd-reset">Reset Model</button>
+              </div>
+            </div>
+          </div>
+
+          <div class="lab-card glass-panel">
+            <div class="lab-card-header">
+              <h3>Loss Surface Contour $L(W, b)$ &amp; Math Trace</h3>
+            </div>
+            <canvas id="gd-contour-canvas" width="440" height="240"></canvas>
+
+            <div class="step-trace-box" id="gd-step-trace">
+              <div class="trace-title">Algorithm Iteration Trace (Slide 40):</div>
+              <div class="trace-line" id="trace-sample">Sample: Living Area $x = 1800 \text{ ft}^2$, True Price $y = \$380\text{k}$</div>
+              <div class="trace-line" id="trace-prediction">Predicted $f_W(x) = \$320\text{k}$</div>
+              <div class="trace-line" id="trace-error">Residual Error $(f_W(x) - y) = -60$</div>
+              <div class="trace-line" id="trace-grad">Gradient contribution = $-60 \times x_j$</div>
+              <div class="trace-line highlight" id="trace-update">Updated $W$: $W_{\text{new}} \leftarrow W_{\text{old}} - \alpha \times \text{grad}$</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- TAB 2: Maximum Likelihood & Binary Cross Entropy -->
+      <div class="opt-pane" id="pane-loss-mle">
+        <div class="lab-layout-2col">
+          <div class="lab-card glass-panel">
+            <div class="lab-card-header">
+              <h3>🎯 Deriving Cross-Entropy from Likelihood (Slides 17–20)</h3>
+            </div>
+            <p>Slide 18 unifies the two Bernoulli outcomes into a single exponential likelihood:</p>
+            <div class="formula">P(y^i | x^i, W) = g(f_W(x^i))^{y^i} \cdot [1 - g(f_W(x^i))]^{1 - y^i}</div>
+            <p>Taking negative log converts maximum product to minimum sum (Cross-Entropy):</p>
+            <div class="formula">\min_W - \sum_{i=1}^n [y^i \log(g) + (1 - y^i) \log(1 - g)]</div>
+
+            <div class="mle-interactive-sliders">
+              <div class="slider-row">
+                <label>Ground Truth Label $y^i$:</label>
+                <div class="pg-toggle-group" id="mle-label-group">
+                  <button class="pg-toggle active" data-y="1">Class 1 ($y=1$)</button>
+                  <button class="pg-toggle" data-y="0">Class 0 ($y=0$)</button>
+                </div>
+              </div>
+              <div class="slider-row">
+                <label>Predicted Probability $\hat{y} = g(f_W(x))$: <span id="mle-prob-val">0.85</span></label>
+                <input type="range" id="mle-prob-slider" min="0.01" max="0.99" step="0.01" value="0.85">
+              </div>
+            </div>
+          </div>
+
+          <div class="lab-card glass-panel">
+            <div class="lab-card-header">
+              <h3>Cross-Entropy vs MSE Loss Curve</h3>
+            </div>
+            <canvas id="mle-loss-canvas" width="440" height="260"></canvas>
+            <div class="mle-metrics-box">
+              <div class="m-box">
+                <span class="m-val" id="mle-bce-loss">0.162</span>
+                <span class="m-lbl">Cross-Entropy Loss</span>
+              </div>
+              <div class="m-box">
+                <span class="m-val" id="mle-mse-loss">0.011</span>
+                <span class="m-lbl">Squared Error Loss</span>
+              </div>
+              <div class="m-box">
+                <span class="m-val" id="mle-gradient-steepness">Steep (Fast)</span>
+                <span class="m-lbl">Gradient Signal</span>
+              </div>
+            </div>
+            <p class="note-text" style="margin-top:12px; font-size:0.8rem; color:var(--text-muted);">
+              Notice: When the model is confidently wrong ($\hat{y} \to 0$ for $y=1$), Cross-Entropy loss explodes to $\infty$ providing strong gradient flow, whereas MSE flattens out due to the derivative of sigmoid!
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- TAB 3: Multi-Class Softmax (Slides 34-36) -->
+      <div class="opt-pane" id="pane-softmax-multiclass">
+        <div class="lab-layout-2col">
+          <div class="lab-card glass-panel">
+            <div class="lab-card-header">
+              <h3>🐱 Multi-Class Output &amp; Softmax (Slide 34–36)</h3>
+            </div>
+            <p>From Slide 34: The network outputs vector logits for multiple classes: {cat, dog, car}.</p>
+            <div class="formula">\text{Softmax}(z)_i = \frac{e^{z_i}}{\sum_{j=0}^{|c|-1} e^{z_j}}</div>
+
+            <div class="logits-sliders-group">
+              <div class="logit-row">
+                <label><span>🐱 Cat Logit ($z_0$):</span> <span id="val-z-cat">2.1</span></label>
+                <input type="range" class="logit-slider" id="slider-z-cat" min="-5" max="5" step="0.1" value="2.1">
+              </div>
+              <div class="logit-row">
+                <label><span>🐶 Dog Logit ($z_1$):</span> <span id="val-z-dog">0.8</span></label>
+                <input type="range" class="logit-slider" id="slider-z-dog" min="-5" max="5" step="0.1" value="0.8">
+              </div>
+              <div class="logit-row">
+                <label><span>🚗 Car Logit ($z_2$):</span> <span id="val-z-car">-1.2</span></label>
+                <input type="range" class="logit-slider" id="slider-z-car" min="-5" max="5" step="0.1" value="-1.2">
+              </div>
+            </div>
+
+            <div class="target-class-selector">
+              <label>True Target Class (1-hot vector $c$):</label>
+              <div class="pg-toggle-group" id="target-class-group">
+                <button class="pg-toggle active" data-class="0">🐱 Cat: [1, 0, 0]</button>
+                <button class="pg-toggle" data-class="1">🐶 Dog: [0, 1, 0]</button>
+                <button class="pg-toggle" data-class="2">🚗 Car: [0, 0, 1]</button>
+              </div>
+            </div>
+          </div>
+
+          <div class="lab-card glass-panel">
+            <div class="lab-card-header">
+              <h3>Normalized Class Probabilities &amp; Loss</h3>
+            </div>
+            <div class="softmax-bars-container" id="softmax-bars-container">
+              <!-- Rendered by JS -->
+            </div>
+            <div class="multiclass-ce-box glass-panel" style="margin-top:20px; padding:16px;">
+              <div class="formula">L = - \sum_{j=0}^{|c|-1} c[j] \log(p_j)</div>
+              <div class="ce-live-result">
+                <span>Multi-class Cross-Entropy Loss:</span>
+                <span class="m-val" id="multiclass-ce-val" style="color:var(--emerald-400); font-size:1.4rem;">0.284</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- TAB 4: Computation Graph & Backpropagation (Slides 10–11) -->
+      <div class="opt-pane" id="pane-backprop-graph">
+        <div class="lab-layout-2col">
+          <div class="lab-card glass-panel">
+            <div class="lab-card-header">
+              <h3>🔀 Slide 10: Interactive Computation Graph</h3>
+            </div>
+            <p>Slide 10 decomposes complex functions into a Directed Acyclic Graph (DAG) of elementary operations:</p>
+            <div class="formula">f(a, b) = (a + b) \cdot (b + 1)</div>
+            
+            <div class="graph-input-controls">
+              <div class="slider-group">
+                <label>Input $a$: <span id="bp-val-a">2.0</span></label>
+                <input type="range" id="bp-input-a" min="-5" max="5" step="0.5" value="2.0">
+              </div>
+              <div class="slider-group">
+                <label>Input $b$: <span id="bp-val-b">1.0</span></label>
+                <input type="range" id="bp-input-b" min="-5" max="5" step="0.5" value="1.0">
+              </div>
+            </div>
+
+            <!-- Visual Graph Nodes Container -->
+            <div class="computation-graph-visual" id="comp-graph-nodes">
+              <!-- Rendered by JS: Nodes for a, b, c=a+b, d=b+1, e=c*d -->
+            </div>
+
+            <div class="graph-actions-bar" style="margin-top:16px; display:flex; gap:10px;">
+              <button class="btn btn-sm btn-primary" id="btn-bp-forward">▶ Run Forward Pass</button>
+              <button class="btn btn-sm btn-ghost" id="btn-bp-backward">⬅ Run Reverse Backprop</button>
+            </div>
+          </div>
+
+          <div class="lab-card glass-panel">
+            <div class="lab-card-header">
+              <h3>Reverse-Mode Gradient Accumulation (Slide 10 &amp; 11)</h3>
+            </div>
+            <div class="step-trace-box" id="bp-gradient-trace">
+              <div class="trace-title">Analytical Backprop Derivation:</div>
+              <div class="trace-line" id="bp-trace-e">$$\frac{\partial e}{\partial e} = 1.0$$</div>
+              <div class="trace-line" id="bp-trace-cd">$$\frac{\partial e}{\partial c} = d = 2.0, \quad \frac{\partial e}{\partial d} = c = 3.0$$</div>
+              <div class="trace-line" id="bp-trace-a">$$\frac{\partial e}{\partial a} = \frac{\partial e}{\partial c} \frac{\partial c}{\partial a} = 2.0 \times 1 = 2.0$$</div>
+              <div class="trace-line highlight" id="bp-trace-b">
+                $$\frac{\partial e}{\partial b} = \frac{\partial e}{\partial c}\frac{\partial c}{\partial b} + \frac{\partial e}{\partial d}\frac{\partial d}{\partial b} = 2.0(1) + 3.0(1) = 5.0$$
+              </div>
+            </div>
+            <div class="info-box" style="margin-top:16px;">
+              <div class="info-title">💡 The Branch-Sum Rule (Slide 9 &amp; 10)</div>
+              <p>When variable $b$ fans out into multiple intermediate nodes ($c$ and $d$), its total derivative sums the contributions along all downstream paths: $\frac{\partial e}{\partial b} = \frac{\partial e}{\partial c}\frac{\partial c}{\partial b} + \frac{\partial e}{\partial d}\frac{\partial d}{\partial b}$.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- TAB 5: Optimizer Arena (Slides 18–25) -->
+      <div class="opt-pane" id="pane-optimizers-zoo">
+        <div class="lab-layout-2col">
+          <div class="lab-card glass-panel">
+            <div class="lab-card-header">
+              <h3>🏎️ Slides 18–25: Optimizer Arena on Ravine Landscape</h3>
+            </div>
+            <p>Compare how different optimizers traverse an anisotropic loss ravine $J(\theta_1, \theta_2) = 0.08 \theta_1^2 + 1.2 \theta_2^2$:</p>
+            
+            <div class="optimizer-select-bar">
+              <div class="pg-toggle-group" id="opt-selector-group">
+                <button class="pg-toggle active" data-opt="sgd">SGD</button>
+                <button class="pg-toggle" data-opt="momentum">Momentum ($\gamma=0.9$)</button>
+                <button class="pg-toggle" data-opt="nesterov">Nesterov (NAG)</button>
+                <button class="pg-toggle" data-opt="adagrad">Adagrad</button>
+                <button class="pg-toggle" data-opt="adam">Adam</button>
+              </div>
+            </div>
+
+            <canvas id="opt-arena-canvas" width="440" height="280"></canvas>
+
+            <div class="gd-btn-row" style="margin-top:12px;">
+              <button class="btn btn-sm btn-primary" id="btn-opt-run">▶ Start Optimizer</button>
+              <button class="btn btn-sm btn-ghost" id="btn-opt-reset">Reset</button>
+            </div>
+          </div>
+
+          <div class="lab-card glass-panel">
+            <div class="lab-card-header">
+              <h3>Mathematical Dynamics &amp; Mechanics</h3>
+            </div>
+            <div class="opt-math-card" id="opt-math-detail">
+              <!-- Dynamically populated with optimizer formulas and exam notes -->
+            </div>
+            <div class="mle-metrics-box" style="margin-top:16px;">
+              <div class="m-box">
+                <span class="m-val" id="opt-cur-iter">0</span>
+                <span class="m-lbl">Iterations</span>
+              </div>
+              <div class="m-box">
+                <span class="m-val" id="opt-cur-loss">0.000</span>
+                <span class="m-lbl">Current Loss</span>
+              </div>
+              <div class="m-box">
+                <span class="m-val" id="opt-status-text">Ready</span>
+                <span class="m-lbl">Status</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- TAB 6: Weight Init & Normalization (Slides 33–44) -->
+      <div class="opt-pane" id="pane-init-norm">
+        <div class="lab-layout-2col">
+          <div class="lab-card glass-panel">
+            <div class="lab-card-header">
+              <h3>⚖️ Slides 33–39: Variance Propagation Across 10 Layers</h3>
+            </div>
+            <p>Why do we need variance-preserving initialization? Observe what happens to signal variance across depth:</p>
+            
+            <div class="init-toggles-bar">
+              <label>Initialization Scheme:</label>
+              <div class="pg-toggle-group" id="init-scheme-group">
+                <button class="pg-toggle" data-init="zero">Zero Init</button>
+                <button class="pg-toggle" data-init="normal">Normal $\mathcal{N}(0, 1)$</button>
+                <button class="pg-toggle" data-init="xavier">Xavier / Glorot</button>
+                <button class="pg-toggle active" data-init="kaiming">Kaiming / He (ReLU)</button>
+              </div>
+            </div>
+
+            <canvas id="init-variance-canvas" width="440" height="240"></canvas>
+            <div class="init-verdict" id="init-verdict-box" style="margin-top:12px;"></div>
+          </div>
+
+          <div class="lab-card glass-panel">
+            <div class="lab-card-header">
+              <h3>📊 Slides 41–44: Batch Normalization vs Layer Normalization</h3>
+            </div>
+            <div class="norm-comparison-toggle">
+              <div class="pg-toggle-group" id="norm-mode-group">
+                <button class="pg-toggle active" data-norm="batch">Batch Normalization (Across Batch $N$)</button>
+                <button class="pg-toggle" data-norm="layer">Layer Normalization (Across Features $D$)</button>
+              </div>
+            </div>
+
+            <canvas id="norm-matrix-canvas" width="440" height="200"></canvas>
+
+            <div class="norm-math-box" id="norm-math-box" style="margin-top:12px;">
+              <!-- Populated by JS -->
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================== CNN & ARCHITECTURES LAB (LECTURE 3) ===================== -->
+    <section class="section section-cnn-lab" id="section-cnn-lab">
+      <div class="modules-header">
+        <h2 class="section-title">Convolutional Neural Networks &amp; Landmark Architectures</h2>
+        <p class="section-desc">Interactive filter sliding, output geometry &amp; parameter counters, Sobel kernels, and comparative deep-dives into AlexNet, VGG, GoogLeNet, and ResNet.</p>
+      </div>
+
+      <div class="app-tabs-bar">
+        <button class="cnn-tab active" data-tab="cnn-calc">📐 Slides 18–25: Spatial Geometry &amp; Parameter Counter</button>
+        <button class="cnn-tab" data-tab="cnn-architectures">🏛️ Slides 31–42: Landmark Architectures Deep-Dive</button>
+        <button class="cnn-tab" data-tab="cnn-kernel">🔍 Slides 6–15: 2D Convolution &amp; Sobel Edge Filters</button>
+      </div>
+
+      <!-- CNN TAB 1: Geometry & Learnable Parameter Counter -->
+      <div class="cnn-pane active" id="pane-cnn-calc">
+        <div class="lab-layout-2col">
+          <div class="lab-card glass-panel">
+            <div class="lab-card-header">
+              <h3>📐 Dimension &amp; Learnable Parameter Calculator (Slide 24 &amp; 25)</h3>
+            </div>
+            
+            <div class="cnn-preset-bar">
+              <span style="font-size:0.8rem; color:var(--text-secondary);">Load Slide Preset:</span>
+              <div class="pg-toggle-group" id="cnn-preset-group">
+                <button class="pg-toggle active" data-preset="slide24">Slide 24 Example</button>
+                <button class="pg-toggle" data-preset="alex-conv1">AlexNet Conv1</button>
+                <button class="pg-toggle" data-preset="alex-conv2">AlexNet Conv2</button>
+                <button class="pg-toggle" data-preset="vgg-conv">VGG $3\times 3$</button>
+              </div>
+            </div>
+
+            <div class="cnn-calc-inputs" style="display:grid; grid-template-columns: 1fr 1fr; gap:12px; margin:16px 0;">
+              <div class="slider-group">
+                <label>Input Channels $C_{\text{in}}$: <span id="lbl-cin">3</span></label>
+                <input type="number" id="inp-cin" min="1" max="1024" value="3" class="pg-num-input">
+              </div>
+              <div class="slider-group">
+                <label>Input Height $H = W$: <span id="lbl-hin">32</span></label>
+                <input type="number" id="inp-hin" min="1" max="512" value="32" class="pg-num-input">
+              </div>
+              <div class="slider-group">
+                <label>Filter Kernel $F$: <span id="lbl-f">5</span></label>
+                <input type="number" id="inp-f" min="1" max="31" step="2" value="5" class="pg-num-input">
+              </div>
+              <div class="slider-group">
+                <label>Output Filters $C_{\text{out}}$: <span id="lbl-cout">10</span></label>
+                <input type="number" id="inp-cout" min="1" max="1024" value="10" class="pg-num-input">
+              </div>
+              <div class="slider-group">
+                <label>Stride $S$: <span id="lbl-s">1</span></label>
+                <input type="number" id="inp-s" min="1" max="10" value="1" class="pg-num-input">
+              </div>
+              <div class="slider-group">
+                <label>Zero-Padding $P$: <span id="lbl-p">2</span></label>
+                <input type="number" id="inp-p" min="0" max="20" value="2" class="pg-num-input">
+              </div>
+            </div>
+
+            <div class="formula">
+              \begin{aligned}
+              H' &= \left\lfloor \frac{H - F + 2P}{S} \right\rfloor + 1 \\
+              \text{Params} &= C_{\text{out}} \times (F \times F \times C_{\text{in}} + 1)
+              \end{aligned}
+            </div>
+          </div>
+
+          <div class="lab-card glass-panel">
+            <div class="lab-card-header">
+              <h3>Output Volume &amp; Parameter Breakdown</h3>
+            </div>
+            <div class="cnn-result-summary" id="cnn-calc-results">
+              <!-- Dynamically populated -->
+            </div>
+            <canvas id="cnn-grid-preview" width="440" height="220" style="margin-top:16px;"></canvas>
+          </div>
+        </div>
+      </div>
+
+      <!-- CNN TAB 2: Landmark Architectures Deep-Dive -->
+      <div class="cnn-pane" id="pane-cnn-architectures">
+        <div class="app-tabs-bar" style="margin-bottom:16px;">
+          <button class="arch-tab active" data-arch="alexnet">AlexNet (2012)</button>
+          <button class="arch-tab" data-arch="vgg">VGGNet (2014)</button>
+          <button class="arch-tab" data-arch="googlenet">GoogLeNet / Inception (2014)</button>
+          <button class="arch-tab" data-arch="resnet">ResNet (2015)</button>
+        </div>
+
+        <div class="arch-content-container" id="arch-display-pane">
+          <!-- Dynamically populated by JS -->
+        </div>
+      </div>
+
+      <!-- CNN TAB 3: 2D Convolution & Sobel Kernel Interactive Grid -->
+      <div class="cnn-pane" id="pane-cnn-kernel">
+        <div class="lab-layout-2col">
+          <div class="lab-card glass-panel">
+            <div class="lab-card-header">
+              <h3>🔍 2D Convolution &amp; Sobel Edge Filters (Slide 15)</h3>
+            </div>
+            <div class="kernel-selector-bar">
+              <span style="font-size:0.8rem; color:var(--text-secondary);">Select Kernel:</span>
+              <div class="pg-toggle-group" id="kernel-select-group">
+                <button class="pg-toggle active" data-kernel="sobelX">Sobel $G_x$ (Vertical Edges)</button>
+                <button class="pg-toggle" data-kernel="sobelY">Sobel $G_y$ (Horizontal Edges)</button>
+                <button class="pg-toggle" data-kernel="blur">Box Blur</button>
+                <button class="pg-toggle" data-kernel="sharpen">Sharpen</button>
+              </div>
+            </div>
+
+            <canvas id="conv-kernel-canvas" width="440" height="280"></canvas>
+            <p class="note-text" style="margin-top:10px; font-size:0.8rem; color:var(--text-muted);">
+              Move your mouse over the canvas to slide the $3\times 3$ filter window across the input patch. Watch the live dot product $w^T x + b$ compute the output activation value!
+            </p>
+          </div>
+
+          <div class="lab-card glass-panel">
+            <div class="lab-card-header">
+              <h3>Live Dot-Product $w^T x + b$ Calculation</h3>
+            </div>
+            <div class="kernel-matrix-display" id="kernel-matrix-display">
+              <!-- Dynamically populated -->
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================== VALIDATION & K-FOLD LAB (SLIDES 41-43) ===================== -->
+    <section class="section section-validation-lab" id="section-validation-lab">
+      <div class="modules-header">
+        <h2 class="section-title">Model Evaluation &amp; K-Fold Cross-Validation</h2>
+        <p class="section-desc">Interactive train/val/test data splitting, regression vs classification metrics, and 10-fold cross validation from Slides 41–43.</p>
+      </div>
+
+      <div class="lab-layout-2col">
+        <div class="lab-card glass-panel">
+          <div class="lab-card-header">
+            <h3>📊 10-Fold Cross-Validation Simulator (Slide 43)</h3>
+          </div>
+          <p>
+            Why cross-validation? Simple train-test split can suffer from random fluctuations on limited datasets. 10-fold cross validation splits data into 10 partitions, trains on 9, evaluates on 1, repeats 10 times, and averages the results.
+          </p>
+
+          <div class="kfold-controls-bar">
+            <button class="btn btn-primary btn-sm" id="btn-run-kfold">▶ Run 10-Fold Evaluation</button>
+            <button class="btn btn-ghost btn-sm" id="btn-gen-kfold-data">Generate New Data</button>
+          </div>
+
+          <!-- 10 Folds Visual Grid -->
+          <div class="kfold-grid-visual" id="kfold-grid-visual">
+            <!-- 10 rows representing fold 1..10, each with 9 train blocks and 1 test block -->
+          </div>
+        </div>
+
+        <div class="lab-card glass-panel">
+          <div class="lab-card-header">
+            <h3>📈 Fold Metrics &amp; Aggregated Results</h3>
+          </div>
+          <div class="kfold-results-table-wrapper">
+            <table class="kfold-table" id="kfold-table">
+              <thead>
+                <tr>
+                  <th>Fold</th>
+                  <th>Train Loss (MSE)</th>
+                  <th>Test Loss (MSE)</th>
+                  <th>Accuracy</th>
+                </tr>
+              </thead>
+              <tbody id="kfold-tbody">
+                <tr><td colspan="4" style="text-align:center; color:var(--text-muted);">Click "Run 10-Fold Evaluation" to begin</td></tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div class="kfold-summary-box glass-panel" style="margin-top:16px; padding:16px;">
+            <div class="summary-line">
+              <span>Mean Test Loss (MSE):</span>
+              <strong id="kfold-mean-mse" style="color:var(--cyan-300);">—</strong>
+            </div>
+            <div class="summary-line">
+              <span>Standard Deviation ($\sigma$):</span>
+              <strong id="kfold-std-mse" style="color:var(--amber-400);">—</strong>
+            </div>
+            <div class="summary-line">
+              <span>Average Accuracy:</span>
+              <strong id="kfold-mean-acc" style="color:var(--emerald-400);">—</strong>
+            </div>
+          </div>
+        </div>
+      </div>
+
+
+      <!-- TAB 4: Computation Graph & Backpropagation (Slides 10–11) -->
+      <div class="opt-pane" id="pane-backprop-graph">
+        <div class="lab-layout-2col">
+          <div class="lab-card glass-panel">
+            <div class="lab-card-header">
+              <h3>🔀 Slide 10: Interactive Computation Graph</h3>
+            </div>
+            <p>Slide 10 decomposes complex functions into a Directed Acyclic Graph (DAG) of elementary operations:</p>
+            <div class="formula">f(a, b) = (a + b) \cdot (b + 1)</div>
+            
+            <div class="graph-input-controls">
+              <div class="slider-group">
+                <label>Input $a$: <span id="bp-val-a">2.0</span></label>
+                <input type="range" id="bp-input-a" min="-5" max="5" step="0.5" value="2.0">
+              </div>
+              <div class="slider-group">
+                <label>Input $b$: <span id="bp-val-b">1.0</span></label>
+                <input type="range" id="bp-input-b" min="-5" max="5" step="0.5" value="1.0">
+              </div>
+            </div>
+
+            <!-- Visual Graph Nodes Container -->
+            <div class="computation-graph-visual" id="comp-graph-nodes">
+              <!-- Rendered by JS: Nodes for a, b, c=a+b, d=b+1, e=c*d -->
+            </div>
+
+            <div class="graph-actions-bar" style="margin-top:16px; display:flex; gap:10px;">
+              <button class="btn btn-sm btn-primary" id="btn-bp-forward">▶ Run Forward Pass</button>
+              <button class="btn btn-sm btn-ghost" id="btn-bp-backward">⬅ Run Reverse Backprop</button>
+            </div>
+          </div>
+
+          <div class="lab-card glass-panel">
+            <div class="lab-card-header">
+              <h3>Reverse-Mode Gradient Accumulation (Slide 10 &amp; 11)</h3>
+            </div>
+            <div class="step-trace-box" id="bp-gradient-trace">
+              <div class="trace-title">Analytical Backprop Derivation:</div>
+              <div class="trace-line" id="bp-trace-e">$$\frac{\partial e}{\partial e} = 1.0$$</div>
+              <div class="trace-line" id="bp-trace-cd">$$\frac{\partial e}{\partial c} = d = 2.0, \quad \frac{\partial e}{\partial d} = c = 3.0$$</div>
+              <div class="trace-line" id="bp-trace-a">$$\frac{\partial e}{\partial a} = \frac{\partial e}{\partial c} \frac{\partial c}{\partial a} = 2.0 \times 1 = 2.0$$</div>
+              <div class="trace-line highlight" id="bp-trace-b">
+                $$\frac{\partial e}{\partial b} = \frac{\partial e}{\partial c}\frac{\partial c}{\partial b} + \frac{\partial e}{\partial d}\frac{\partial d}{\partial b} = 2.0(1) + 3.0(1) = 5.0$$
+              </div>
+            </div>
+            <div class="info-box" style="margin-top:16px;">
+              <div class="info-title">💡 The Branch-Sum Rule (Slide 9 &amp; 10)</div>
+              <p>When variable $b$ fans out into multiple intermediate nodes ($c$ and $d$), its total derivative sums the contributions along all downstream paths: $\frac{\partial e}{\partial b} = \frac{\partial e}{\partial c}\frac{\partial c}{\partial b} + \frac{\partial e}{\partial d}\frac{\partial d}{\partial b}$.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- TAB 5: Optimizer Arena (Slides 18–25) -->
+      <div class="opt-pane" id="pane-optimizers-zoo">
+        <div class="lab-layout-2col">
+          <div class="lab-card glass-panel">
+            <div class="lab-card-header">
+              <h3>🏎️ Slides 18–25: Optimizer Arena on Ravine Landscape</h3>
+            </div>
+            <p>Compare how different optimizers traverse an anisotropic loss ravine $J(\theta_1, \theta_2) = 0.08 \theta_1^2 + 1.2 \theta_2^2$:</p>
+            
+            <div class="optimizer-select-bar">
+              <div class="pg-toggle-group" id="opt-selector-group">
+                <button class="pg-toggle active" data-opt="sgd">SGD</button>
+                <button class="pg-toggle" data-opt="momentum">Momentum ($\gamma=0.9$)</button>
+                <button class="pg-toggle" data-opt="nesterov">Nesterov (NAG)</button>
+                <button class="pg-toggle" data-opt="adagrad">Adagrad</button>
+                <button class="pg-toggle" data-opt="adam">Adam</button>
+              </div>
+            </div>
+
+            <canvas id="opt-arena-canvas" width="440" height="280"></canvas>
+
+            <div class="gd-btn-row" style="margin-top:12px;">
+              <button class="btn btn-sm btn-primary" id="btn-opt-run">▶ Start Optimizer</button>
+              <button class="btn btn-sm btn-ghost" id="btn-opt-reset">Reset</button>
+            </div>
+          </div>
+
+          <div class="lab-card glass-panel">
+            <div class="lab-card-header">
+              <h3>Mathematical Dynamics &amp; Mechanics</h3>
+            </div>
+            <div class="opt-math-card" id="opt-math-detail">
+              <!-- Dynamically populated with optimizer formulas and exam notes -->
+            </div>
+            <div class="mle-metrics-box" style="margin-top:16px;">
+              <div class="m-box">
+                <span class="m-val" id="opt-cur-iter">0</span>
+                <span class="m-lbl">Iterations</span>
+              </div>
+              <div class="m-box">
+                <span class="m-val" id="opt-cur-loss">0.000</span>
+                <span class="m-lbl">Current Loss</span>
+              </div>
+              <div class="m-box">
+                <span class="m-val" id="opt-status-text">Ready</span>
+                <span class="m-lbl">Status</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- TAB 6: Weight Init & Normalization (Slides 33–44) -->
+      <div class="opt-pane" id="pane-init-norm">
+        <div class="lab-layout-2col">
+          <div class="lab-card glass-panel">
+            <div class="lab-card-header">
+              <h3>⚖️ Slides 33–39: Variance Propagation Across 10 Layers</h3>
+            </div>
+            <p>Why do we need variance-preserving initialization? Observe what happens to signal variance across depth:</p>
+            
+            <div class="init-toggles-bar">
+              <label>Initialization Scheme:</label>
+              <div class="pg-toggle-group" id="init-scheme-group">
+                <button class="pg-toggle" data-init="zero">Zero Init</button>
+                <button class="pg-toggle" data-init="normal">Normal $\mathcal{N}(0, 1)$</button>
+                <button class="pg-toggle" data-init="xavier">Xavier / Glorot</button>
+                <button class="pg-toggle active" data-init="kaiming">Kaiming / He (ReLU)</button>
+              </div>
+            </div>
+
+            <canvas id="init-variance-canvas" width="440" height="240"></canvas>
+            <div class="init-verdict" id="init-verdict-box" style="margin-top:12px;"></div>
+          </div>
+
+          <div class="lab-card glass-panel">
+            <div class="lab-card-header">
+              <h3>📊 Slides 41–44: Batch Normalization vs Layer Normalization</h3>
+            </div>
+            <div class="norm-comparison-toggle">
+              <div class="pg-toggle-group" id="norm-mode-group">
+                <button class="pg-toggle active" data-norm="batch">Batch Normalization (Across Batch $N$)</button>
+                <button class="pg-toggle" data-norm="layer">Layer Normalization (Across Features $D$)</button>
+              </div>
+            </div>
+
+            <canvas id="norm-matrix-canvas" width="440" height="200"></canvas>
+
+            <div class="norm-math-box" id="norm-math-box" style="margin-top:12px;">
+              <!-- Populated by JS -->
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================== CNN & ARCHITECTURES LAB (LECTURE 3) ===================== -->
+    <section class="section section-cnn-lab" id="section-cnn-lab">
+      <div class="modules-header">
+        <h2 class="section-title">Convolutional Neural Networks &amp; Landmark Architectures</h2>
+        <p class="section-desc">Interactive filter sliding, output geometry &amp; parameter counters, Sobel kernels, and comparative deep-dives into AlexNet, VGG, GoogLeNet, and ResNet.</p>
+      </div>
+
+      <div class="app-tabs-bar">
+        <button class="cnn-tab active" data-tab="cnn-calc">📐 Slides 18–25: Spatial Geometry &amp; Parameter Counter</button>
+        <button class="cnn-tab" data-tab="cnn-architectures">🏛️ Slides 31–42: Landmark Architectures Deep-Dive</button>
+        <button class="cnn-tab" data-tab="cnn-kernel">🔍 Slides 6–15: 2D Convolution &amp; Sobel Edge Filters</button>
+      </div>
+
+      <!-- CNN TAB 1: Geometry & Learnable Parameter Counter -->
+      <div class="cnn-pane active" id="pane-cnn-calc">
+        <div class="lab-layout-2col">
+          <div class="lab-card glass-panel">
+            <div class="lab-card-header">
+              <h3>📐 Dimension &amp; Learnable Parameter Calculator (Slide 24 &amp; 25)</h3>
+            </div>
+            
+            <div class="cnn-preset-bar">
+              <span style="font-size:0.8rem; color:var(--text-secondary);">Load Slide Preset:</span>
+              <div class="pg-toggle-group" id="cnn-preset-group">
+                <button class="pg-toggle active" data-preset="slide24">Slide 24 Example</button>
+                <button class="pg-toggle" data-preset="alex-conv1">AlexNet Conv1</button>
+                <button class="pg-toggle" data-preset="alex-conv2">AlexNet Conv2</button>
+                <button class="pg-toggle" data-preset="vgg-conv">VGG $3\times 3$</button>
+              </div>
+            </div>
+
+            <div class="cnn-calc-inputs" style="display:grid; grid-template-columns: 1fr 1fr; gap:12px; margin:16px 0;">
+              <div class="slider-group">
+                <label>Input Channels $C_{\text{in}}$: <span id="lbl-cin">3</span></label>
+                <input type="number" id="inp-cin" min="1" max="1024" value="3" class="pg-num-input">
+              </div>
+              <div class="slider-group">
+                <label>Input Height $H = W$: <span id="lbl-hin">32</span></label>
+                <input type="number" id="inp-hin" min="1" max="512" value="32" class="pg-num-input">
+              </div>
+              <div class="slider-group">
+                <label>Filter Kernel $F$: <span id="lbl-f">5</span></label>
+                <input type="number" id="inp-f" min="1" max="31" step="2" value="5" class="pg-num-input">
+              </div>
+              <div class="slider-group">
+                <label>Output Filters $C_{\text{out}}$: <span id="lbl-cout">10</span></label>
+                <input type="number" id="inp-cout" min="1" max="1024" value="10" class="pg-num-input">
+              </div>
+              <div class="slider-group">
+                <label>Stride $S$: <span id="lbl-s">1</span></label>
+                <input type="number" id="inp-s" min="1" max="10" value="1" class="pg-num-input">
+              </div>
+              <div class="slider-group">
+                <label>Zero-Padding $P$: <span id="lbl-p">2</span></label>
+                <input type="number" id="inp-p" min="0" max="20" value="2" class="pg-num-input">
+              </div>
+            </div>
+
+            <div class="formula">
+              \begin{aligned}
+              H' &= \left\lfloor \frac{H - F + 2P}{S} \right\rfloor + 1 \\
+              \text{Params} &= C_{\text{out}} \times (F \times F \times C_{\text{in}} + 1)
+              \end{aligned}
+            </div>
+          </div>
+
+          <div class="lab-card glass-panel">
+            <div class="lab-card-header">
+              <h3>Output Volume &amp; Parameter Breakdown</h3>
+            </div>
+            <div class="cnn-result-summary" id="cnn-calc-results">
+              <!-- Dynamically populated -->
+            </div>
+            <canvas id="cnn-grid-preview" width="440" height="220" style="margin-top:16px;"></canvas>
+          </div>
+        </div>
+      </div>
+
+      <!-- CNN TAB 2: Landmark Architectures Deep-Dive -->
+      <div class="cnn-pane" id="pane-cnn-architectures">
+        <div class="app-tabs-bar" style="margin-bottom:16px;">
+          <button class="arch-tab active" data-arch="alexnet">AlexNet (2012)</button>
+          <button class="arch-tab" data-arch="vgg">VGGNet (2014)</button>
+          <button class="arch-tab" data-arch="googlenet">GoogLeNet / Inception (2014)</button>
+          <button class="arch-tab" data-arch="resnet">ResNet (2015)</button>
+        </div>
+
+        <div class="arch-content-container" id="arch-display-pane">
+          <!-- Dynamically populated by JS -->
+        </div>
+      </div>
+
+      <!-- CNN TAB 3: 2D Convolution & Sobel Kernel Interactive Grid -->
+      <div class="cnn-pane" id="pane-cnn-kernel">
+        <div class="lab-layout-2col">
+          <div class="lab-card glass-panel">
+            <div class="lab-card-header">
+              <h3>🔍 2D Convolution &amp; Sobel Edge Filters (Slide 15)</h3>
+            </div>
+            <div class="kernel-selector-bar">
+              <span style="font-size:0.8rem; color:var(--text-secondary);">Select Kernel:</span>
+              <div class="pg-toggle-group" id="kernel-select-group">
+                <button class="pg-toggle active" data-kernel="sobelX">Sobel $G_x$ (Vertical Edges)</button>
+                <button class="pg-toggle" data-kernel="sobelY">Sobel $G_y$ (Horizontal Edges)</button>
+                <button class="pg-toggle" data-kernel="blur">Box Blur</button>
+                <button class="pg-toggle" data-kernel="sharpen">Sharpen</button>
+              </div>
+            </div>
+
+            <canvas id="conv-kernel-canvas" width="440" height="280"></canvas>
+            <p class="note-text" style="margin-top:10px; font-size:0.8rem; color:var(--text-muted);">
+              Move your mouse over the canvas to slide the $3\times 3$ filter window across the input patch. Watch the live dot product $w^T x + b$ compute the output activation value!
+            </p>
+          </div>
+
+          <div class="lab-card glass-panel">
+            <div class="lab-card-header">
+              <h3>Live Dot-Product $w^T x + b$ Calculation</h3>
+            </div>
+            <div class="kernel-matrix-display" id="kernel-matrix-display">
+              <!-- Dynamically populated -->
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================== PLAYGROUND SECTION ===================== -->
+    <section class="section section-playground" id="section-playground">
+      <div class="playground-header">
+        <h2 class="section-title">Neural Network Playground</h2>
+        <p class="section-desc">Build, train, and visualize neural networks in real-time.</p>
+      </div>
+
+      <div class="playground-layout">
+        <!-- Controls Panel -->
+        <div class="pg-controls glass-panel" id="pg-controls">
+          <div class="pg-control-group">
+            <label class="pg-label">Dataset</label>
+            <div class="pg-dataset-picker" id="pg-dataset-picker">
+              <button class="pg-dataset-btn active" data-dataset="circles" title="Circles">
+                <svg width="28" height="28" viewBox="0 0 28 28"><circle cx="14" cy="14" r="6" fill="none" stroke="#a78bfa" stroke-width="2"/><circle cx="14" cy="14" r="11" fill="none" stroke="#67e8f9" stroke-width="2"/></svg>
+              </button>
+              <button class="pg-dataset-btn" data-dataset="xor" title="XOR">
+                <svg width="28" height="28" viewBox="0 0 28 28"><rect x="4" y="4" width="9" height="9" rx="2" fill="#a78bfa"/><rect x="15" y="15" width="9" height="9" rx="2" fill="#a78bfa"/><rect x="15" y="4" width="9" height="9" rx="2" fill="#67e8f9"/><rect x="4" y="15" width="9" height="9" rx="2" fill="#67e8f9"/></svg>
+              </button>
+              <button class="pg-dataset-btn" data-dataset="spiral" title="Spiral">
+                <svg width="28" height="28" viewBox="0 0 28 28"><path d="M14 14 Q18 10 18 6 Q18 2 14 2 Q10 2 10 6 Q10 10 14 10 Q18 10 22 14 Q26 18 22 22 Q18 26 14 22" fill="none" stroke="#a78bfa" stroke-width="2"/></svg>
+              </button>
+              <button class="pg-dataset-btn" data-dataset="gaussian" title="Gaussian">
+                <svg width="28" height="28" viewBox="0 0 28 28"><circle cx="9" cy="9" r="4" fill="#a78bfa" opacity="0.6"/><circle cx="19" cy="19" r="4" fill="#67e8f9" opacity="0.6"/></svg>
+              </button>
+            </div>
+          </div>
+
+          <div class="pg-control-group">
+            <label class="pg-label">Hidden Layers</label>
+            <div class="pg-layer-config" id="pg-layer-config">
+              <button class="btn btn-sm btn-icon" id="pg-remove-layer" title="Remove layer">−</button>
+              <div class="pg-layers-display" id="pg-layers-display">
+                <!-- Layer neuron counts shown here -->
+              </div>
+              <button class="btn btn-sm btn-icon" id="pg-add-layer" title="Add layer">+</button>
+            </div>
+          </div>
+
+          <div class="pg-control-group">
+            <label class="pg-label">Learning Rate: <span id="pg-lr-value">0.03</span></label>
+            <input type="range" class="pg-slider" id="pg-lr" min="-3" max="0" step="0.1" value="-1.5">
+          </div>
+
+          <div class="pg-control-group">
+            <label class="pg-label">Activation</label>
+            <div class="pg-toggle-group" id="pg-activation">
+              <button class="pg-toggle active" data-value="relu">ReLU</button>
+              <button class="pg-toggle" data-value="sigmoid">Sigmoid</button>
+              <button class="pg-toggle" data-value="tanh">Tanh</button>
+            </div>
+          </div>
+
+          <div class="pg-control-group">
+            <label class="pg-label">Noise: <span id="pg-noise-value">15%</span></label>
+            <input type="range" class="pg-slider" id="pg-noise" min="0" max="50" step="5" value="15">
+          </div>
+
+          <div class="pg-control-group pg-actions">
+            <button class="btn btn-primary btn-glow" id="pg-train-btn">
+              <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor"><polygon points="4,2 14,8 4,14"/></svg>
+              <span>Train</span>
+            </button>
+            <button class="btn btn-ghost btn-sm" id="pg-reset-btn">Reset</button>
+          </div>
+
+          <div class="pg-metrics" id="pg-metrics">
+            <div class="pg-metric">
+              <span class="pg-metric-label">Epoch</span>
+              <span class="pg-metric-value" id="pg-epoch">0</span>
+            </div>
+            <div class="pg-metric">
+              <span class="pg-metric-label">Loss</span>
+              <span class="pg-metric-value" id="pg-loss">—</span>
+            </div>
+            <div class="pg-metric">
+              <span class="pg-metric-label">Accuracy</span>
+              <span class="pg-metric-value" id="pg-accuracy">—</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Visualization Area -->
+        <div class="pg-viz-area">
+          <div class="pg-canvas-wrapper glass-panel">
+            <canvas id="pg-decision-canvas" width="400" height="400"></canvas>
+            <div class="pg-canvas-label">Decision Boundary</div>
+          </div>
+          <div class="pg-network-wrapper glass-panel">
+            <canvas id="pg-network-canvas" width="600" height="300"></canvas>
+            <div class="pg-canvas-label">Network Architecture</div>
+          </div>
+          <div class="pg-loss-wrapper glass-panel">
+            <canvas id="pg-loss-canvas" width="600" height="200"></canvas>
+            <div class="pg-canvas-label">Training Loss</div>
+          </div>
+        </div>
+      </div>
+
+
+      <!-- TAB 4: Computation Graph & Backpropagation (Slides 10–11) -->
+      <div class="opt-pane" id="pane-backprop-graph">
+        <div class="lab-layout-2col">
+          <div class="lab-card glass-panel">
+            <div class="lab-card-header">
+              <h3>🔀 Slide 10: Interactive Computation Graph</h3>
+            </div>
+            <p>Slide 10 decomposes complex functions into a Directed Acyclic Graph (DAG) of elementary operations:</p>
+            <div class="formula">f(a, b) = (a + b) \cdot (b + 1)</div>
+            
+            <div class="graph-input-controls">
+              <div class="slider-group">
+                <label>Input $a$: <span id="bp-val-a">2.0</span></label>
+                <input type="range" id="bp-input-a" min="-5" max="5" step="0.5" value="2.0">
+              </div>
+              <div class="slider-group">
+                <label>Input $b$: <span id="bp-val-b">1.0</span></label>
+                <input type="range" id="bp-input-b" min="-5" max="5" step="0.5" value="1.0">
+              </div>
+            </div>
+
+            <!-- Visual Graph Nodes Container -->
+            <div class="computation-graph-visual" id="comp-graph-nodes">
+              <!-- Rendered by JS: Nodes for a, b, c=a+b, d=b+1, e=c*d -->
+            </div>
+
+            <div class="graph-actions-bar" style="margin-top:16px; display:flex; gap:10px;">
+              <button class="btn btn-sm btn-primary" id="btn-bp-forward">▶ Run Forward Pass</button>
+              <button class="btn btn-sm btn-ghost" id="btn-bp-backward">⬅ Run Reverse Backprop</button>
+            </div>
+          </div>
+
+          <div class="lab-card glass-panel">
+            <div class="lab-card-header">
+              <h3>Reverse-Mode Gradient Accumulation (Slide 10 &amp; 11)</h3>
+            </div>
+            <div class="step-trace-box" id="bp-gradient-trace">
+              <div class="trace-title">Analytical Backprop Derivation:</div>
+              <div class="trace-line" id="bp-trace-e">$$\frac{\partial e}{\partial e} = 1.0$$</div>
+              <div class="trace-line" id="bp-trace-cd">$$\frac{\partial e}{\partial c} = d = 2.0, \quad \frac{\partial e}{\partial d} = c = 3.0$$</div>
+              <div class="trace-line" id="bp-trace-a">$$\frac{\partial e}{\partial a} = \frac{\partial e}{\partial c} \frac{\partial c}{\partial a} = 2.0 \times 1 = 2.0$$</div>
+              <div class="trace-line highlight" id="bp-trace-b">
+                $$\frac{\partial e}{\partial b} = \frac{\partial e}{\partial c}\frac{\partial c}{\partial b} + \frac{\partial e}{\partial d}\frac{\partial d}{\partial b} = 2.0(1) + 3.0(1) = 5.0$$
+              </div>
+            </div>
+            <div class="info-box" style="margin-top:16px;">
+              <div class="info-title">💡 The Branch-Sum Rule (Slide 9 &amp; 10)</div>
+              <p>When variable $b$ fans out into multiple intermediate nodes ($c$ and $d$), its total derivative sums the contributions along all downstream paths: $\frac{\partial e}{\partial b} = \frac{\partial e}{\partial c}\frac{\partial c}{\partial b} + \frac{\partial e}{\partial d}\frac{\partial d}{\partial b}$.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- TAB 5: Optimizer Arena (Slides 18–25) -->
+      <div class="opt-pane" id="pane-optimizers-zoo">
+        <div class="lab-layout-2col">
+          <div class="lab-card glass-panel">
+            <div class="lab-card-header">
+              <h3>🏎️ Slides 18–25: Optimizer Arena on Ravine Landscape</h3>
+            </div>
+            <p>Compare how different optimizers traverse an anisotropic loss ravine $J(\theta_1, \theta_2) = 0.08 \theta_1^2 + 1.2 \theta_2^2$:</p>
+            
+            <div class="optimizer-select-bar">
+              <div class="pg-toggle-group" id="opt-selector-group">
+                <button class="pg-toggle active" data-opt="sgd">SGD</button>
+                <button class="pg-toggle" data-opt="momentum">Momentum ($\gamma=0.9$)</button>
+                <button class="pg-toggle" data-opt="nesterov">Nesterov (NAG)</button>
+                <button class="pg-toggle" data-opt="adagrad">Adagrad</button>
+                <button class="pg-toggle" data-opt="adam">Adam</button>
+              </div>
+            </div>
+
+            <canvas id="opt-arena-canvas" width="440" height="280"></canvas>
+
+            <div class="gd-btn-row" style="margin-top:12px;">
+              <button class="btn btn-sm btn-primary" id="btn-opt-run">▶ Start Optimizer</button>
+              <button class="btn btn-sm btn-ghost" id="btn-opt-reset">Reset</button>
+            </div>
+          </div>
+
+          <div class="lab-card glass-panel">
+            <div class="lab-card-header">
+              <h3>Mathematical Dynamics &amp; Mechanics</h3>
+            </div>
+            <div class="opt-math-card" id="opt-math-detail">
+              <!-- Dynamically populated with optimizer formulas and exam notes -->
+            </div>
+            <div class="mle-metrics-box" style="margin-top:16px;">
+              <div class="m-box">
+                <span class="m-val" id="opt-cur-iter">0</span>
+                <span class="m-lbl">Iterations</span>
+              </div>
+              <div class="m-box">
+                <span class="m-val" id="opt-cur-loss">0.000</span>
+                <span class="m-lbl">Current Loss</span>
+              </div>
+              <div class="m-box">
+                <span class="m-val" id="opt-status-text">Ready</span>
+                <span class="m-lbl">Status</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- TAB 6: Weight Init & Normalization (Slides 33–44) -->
+      <div class="opt-pane" id="pane-init-norm">
+        <div class="lab-layout-2col">
+          <div class="lab-card glass-panel">
+            <div class="lab-card-header">
+              <h3>⚖️ Slides 33–39: Variance Propagation Across 10 Layers</h3>
+            </div>
+            <p>Why do we need variance-preserving initialization? Observe what happens to signal variance across depth:</p>
+            
+            <div class="init-toggles-bar">
+              <label>Initialization Scheme:</label>
+              <div class="pg-toggle-group" id="init-scheme-group">
+                <button class="pg-toggle" data-init="zero">Zero Init</button>
+                <button class="pg-toggle" data-init="normal">Normal $\mathcal{N}(0, 1)$</button>
+                <button class="pg-toggle" data-init="xavier">Xavier / Glorot</button>
+                <button class="pg-toggle active" data-init="kaiming">Kaiming / He (ReLU)</button>
+              </div>
+            </div>
+
+            <canvas id="init-variance-canvas" width="440" height="240"></canvas>
+            <div class="init-verdict" id="init-verdict-box" style="margin-top:12px;"></div>
+          </div>
+
+          <div class="lab-card glass-panel">
+            <div class="lab-card-header">
+              <h3>📊 Slides 41–44: Batch Normalization vs Layer Normalization</h3>
+            </div>
+            <div class="norm-comparison-toggle">
+              <div class="pg-toggle-group" id="norm-mode-group">
+                <button class="pg-toggle active" data-norm="batch">Batch Normalization (Across Batch $N$)</button>
+                <button class="pg-toggle" data-norm="layer">Layer Normalization (Across Features $D$)</button>
+              </div>
+            </div>
+
+            <canvas id="norm-matrix-canvas" width="440" height="200"></canvas>
+
+            <div class="norm-math-box" id="norm-math-box" style="margin-top:12px;">
+              <!-- Populated by JS -->
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================== CNN & ARCHITECTURES LAB (LECTURE 3) ===================== -->
+    <section class="section section-cnn-lab" id="section-cnn-lab">
+      <div class="modules-header">
+        <h2 class="section-title">Convolutional Neural Networks &amp; Landmark Architectures</h2>
+        <p class="section-desc">Interactive filter sliding, output geometry &amp; parameter counters, Sobel kernels, and comparative deep-dives into AlexNet, VGG, GoogLeNet, and ResNet.</p>
+      </div>
+
+      <div class="app-tabs-bar">
+        <button class="cnn-tab active" data-tab="cnn-calc">📐 Slides 18–25: Spatial Geometry &amp; Parameter Counter</button>
+        <button class="cnn-tab" data-tab="cnn-architectures">🏛️ Slides 31–42: Landmark Architectures Deep-Dive</button>
+        <button class="cnn-tab" data-tab="cnn-kernel">🔍 Slides 6–15: 2D Convolution &amp; Sobel Edge Filters</button>
+      </div>
+
+      <!-- CNN TAB 1: Geometry & Learnable Parameter Counter -->
+      <div class="cnn-pane active" id="pane-cnn-calc">
+        <div class="lab-layout-2col">
+          <div class="lab-card glass-panel">
+            <div class="lab-card-header">
+              <h3>📐 Dimension &amp; Learnable Parameter Calculator (Slide 24 &amp; 25)</h3>
+            </div>
+            
+            <div class="cnn-preset-bar">
+              <span style="font-size:0.8rem; color:var(--text-secondary);">Load Slide Preset:</span>
+              <div class="pg-toggle-group" id="cnn-preset-group">
+                <button class="pg-toggle active" data-preset="slide24">Slide 24 Example</button>
+                <button class="pg-toggle" data-preset="alex-conv1">AlexNet Conv1</button>
+                <button class="pg-toggle" data-preset="alex-conv2">AlexNet Conv2</button>
+                <button class="pg-toggle" data-preset="vgg-conv">VGG $3\times 3$</button>
+              </div>
+            </div>
+
+            <div class="cnn-calc-inputs" style="display:grid; grid-template-columns: 1fr 1fr; gap:12px; margin:16px 0;">
+              <div class="slider-group">
+                <label>Input Channels $C_{\text{in}}$: <span id="lbl-cin">3</span></label>
+                <input type="number" id="inp-cin" min="1" max="1024" value="3" class="pg-num-input">
+              </div>
+              <div class="slider-group">
+                <label>Input Height $H = W$: <span id="lbl-hin">32</span></label>
+                <input type="number" id="inp-hin" min="1" max="512" value="32" class="pg-num-input">
+              </div>
+              <div class="slider-group">
+                <label>Filter Kernel $F$: <span id="lbl-f">5</span></label>
+                <input type="number" id="inp-f" min="1" max="31" step="2" value="5" class="pg-num-input">
+              </div>
+              <div class="slider-group">
+                <label>Output Filters $C_{\text{out}}$: <span id="lbl-cout">10</span></label>
+                <input type="number" id="inp-cout" min="1" max="1024" value="10" class="pg-num-input">
+              </div>
+              <div class="slider-group">
+                <label>Stride $S$: <span id="lbl-s">1</span></label>
+                <input type="number" id="inp-s" min="1" max="10" value="1" class="pg-num-input">
+              </div>
+              <div class="slider-group">
+                <label>Zero-Padding $P$: <span id="lbl-p">2</span></label>
+                <input type="number" id="inp-p" min="0" max="20" value="2" class="pg-num-input">
+              </div>
+            </div>
+
+            <div class="formula">
+              \begin{aligned}
+              H' &= \left\lfloor \frac{H - F + 2P}{S} \right\rfloor + 1 \\
+              \text{Params} &= C_{\text{out}} \times (F \times F \times C_{\text{in}} + 1)
+              \end{aligned}
+            </div>
+          </div>
+
+          <div class="lab-card glass-panel">
+            <div class="lab-card-header">
+              <h3>Output Volume &amp; Parameter Breakdown</h3>
+            </div>
+            <div class="cnn-result-summary" id="cnn-calc-results">
+              <!-- Dynamically populated -->
+            </div>
+            <canvas id="cnn-grid-preview" width="440" height="220" style="margin-top:16px;"></canvas>
+          </div>
+        </div>
+      </div>
+
+      <!-- CNN TAB 2: Landmark Architectures Deep-Dive -->
+      <div class="cnn-pane" id="pane-cnn-architectures">
+        <div class="app-tabs-bar" style="margin-bottom:16px;">
+          <button class="arch-tab active" data-arch="alexnet">AlexNet (2012)</button>
+          <button class="arch-tab" data-arch="vgg">VGGNet (2014)</button>
+          <button class="arch-tab" data-arch="googlenet">GoogLeNet / Inception (2014)</button>
+          <button class="arch-tab" data-arch="resnet">ResNet (2015)</button>
+        </div>
+
+        <div class="arch-content-container" id="arch-display-pane">
+          <!-- Dynamically populated by JS -->
+        </div>
+      </div>
+
+      <!-- CNN TAB 3: 2D Convolution & Sobel Kernel Interactive Grid -->
+      <div class="cnn-pane" id="pane-cnn-kernel">
+        <div class="lab-layout-2col">
+          <div class="lab-card glass-panel">
+            <div class="lab-card-header">
+              <h3>🔍 2D Convolution &amp; Sobel Edge Filters (Slide 15)</h3>
+            </div>
+            <div class="kernel-selector-bar">
+              <span style="font-size:0.8rem; color:var(--text-secondary);">Select Kernel:</span>
+              <div class="pg-toggle-group" id="kernel-select-group">
+                <button class="pg-toggle active" data-kernel="sobelX">Sobel $G_x$ (Vertical Edges)</button>
+                <button class="pg-toggle" data-kernel="sobelY">Sobel $G_y$ (Horizontal Edges)</button>
+                <button class="pg-toggle" data-kernel="blur">Box Blur</button>
+                <button class="pg-toggle" data-kernel="sharpen">Sharpen</button>
+              </div>
+            </div>
+
+            <canvas id="conv-kernel-canvas" width="440" height="280"></canvas>
+            <p class="note-text" style="margin-top:10px; font-size:0.8rem; color:var(--text-muted);">
+              Move your mouse over the canvas to slide the $3\times 3$ filter window across the input patch. Watch the live dot product $w^T x + b$ compute the output activation value!
+            </p>
+          </div>
+
+          <div class="lab-card glass-panel">
+            <div class="lab-card-header">
+              <h3>Live Dot-Product $w^T x + b$ Calculation</h3>
+            </div>
+            <div class="kernel-matrix-display" id="kernel-matrix-display">
+              <!-- Dynamically populated -->
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================== MODULES SECTION ===================== -->
+    <section class="section section-modules" id="section-modules">
+      <div class="modules-header">
+        <button class="btn btn-ghost btn-sm btn-back" id="modules-back-btn" style="display:none;">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M10 3L5 8l5 5"/>
+          </svg>
+          Back to Modules
+        </button>
+        <h2 class="section-title" id="modules-title">Learning Modules</h2>
+        <p class="section-desc" id="modules-desc">Structured university foundations aligned with Leibniz Universität Hannover WS 2026/27.</p>
+      </div>
+
+      <!-- Module List View -->
+      <div class="module-list" id="module-list">
+        <!-- Generated by JS -->
+      </div>
+
+      <!-- Module Detail / Lesson View -->
+      <div class="lesson-view" id="lesson-view" style="display:none;">
+        <div class="lesson-sidebar" id="lesson-sidebar">
+          <!-- Lesson nav generated by JS -->
+        </div>
+        <div class="lesson-content" id="lesson-content">
+          <!-- Lesson content rendered by JS -->
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================== QUIZ SECTION ===================== -->
+    <section class="section section-quiz" id="section-quiz">
+      <div class="quiz-header">
+        <h2 class="section-title">Knowledge Check &amp; Exam Prep</h2>
+        <p class="section-desc">Test your understanding with lecture questions and assignment challenges.</p>
+      </div>
+
+      <div class="quiz-container" id="quiz-container">
+        <!-- Quiz topic selector -->
+        <div class="quiz-topics" id="quiz-topics">
+          <!-- Generated by JS -->
+        </div>
+
+        <!-- Active quiz area -->
+        <div class="quiz-active glass-panel" id="quiz-active" style="display:none;">
+          <div class="quiz-progress-bar">
+            <div class="quiz-progress-fill" id="quiz-progress-fill"></div>
+          </div>
+          <div class="quiz-question-num" id="quiz-question-num">Question 1 of 5</div>
+          <h3 class="quiz-question" id="quiz-question"></h3>
+          <div class="quiz-visual" id="quiz-visual"></div>
+          <div class="quiz-options" id="quiz-options">
+            <!-- Generated by JS -->
+          </div>
+          <div class="quiz-feedback" id="quiz-feedback" style="display:none;"></div>
+          <div class="quiz-nav">
+            <button class="btn btn-ghost btn-sm" id="quiz-exit-btn">Exit Quiz</button>
+            <button class="btn btn-primary btn-sm" id="quiz-next-btn" style="display:none;">Next Question</button>
+          </div>
+        </div>
+
+        <!-- Quiz results -->
+        <div class="quiz-results glass-panel" id="quiz-results" style="display:none;">
+          <div class="quiz-score-ring" id="quiz-score-ring">
+            <svg width="120" height="120" viewBox="0 0 120 120">
+              <circle cx="60" cy="60" r="50" stroke="rgba(255,255,255,0.1)" stroke-width="8" fill="none"/>
+              <circle cx="60" cy="60" r="50" stroke="url(#score-grad)" stroke-width="8" fill="none"
+                      stroke-dasharray="314" stroke-dashoffset="314" stroke-linecap="round"
+                      id="score-circle" transform="rotate(-90 60 60)"/>
+              <defs>
+                <linearGradient id="score-grad" x1="0" y1="0" x2="1" y2="1">
+                  <stop offset="0%" stop-color="#a78bfa"/>
+                  <stop offset="100%" stop-color="#34d399"/>
+                </linearGradient>
+              </defs>
+            </svg>
+            <span class="quiz-score-text" id="quiz-score-text">0%</span>
+          </div>
+          <h3 class="quiz-results-title" id="quiz-results-title">Great Job!</h3>
+          <p class="quiz-results-desc" id="quiz-results-desc"></p>
+          <div class="quiz-results-actions">
+            <button class="btn btn-primary" id="quiz-retry-btn">Try Again</button>
+            <button class="btn btn-ghost" id="quiz-back-btn">Back to Topics</button>
+          </div>
+        </div>
+      </div>
+
+
+      <!-- TAB 4: Computation Graph & Backpropagation (Slides 10–11) -->
+      <div class="opt-pane" id="pane-backprop-graph">
+        <div class="lab-layout-2col">
+          <div class="lab-card glass-panel">
+            <div class="lab-card-header">
+              <h3>🔀 Slide 10: Interactive Computation Graph</h3>
+            </div>
+            <p>Slide 10 decomposes complex functions into a Directed Acyclic Graph (DAG) of elementary operations:</p>
+            <div class="formula">f(a, b) = (a + b) \cdot (b + 1)</div>
+            
+            <div class="graph-input-controls">
+              <div class="slider-group">
+                <label>Input $a$: <span id="bp-val-a">2.0</span></label>
+                <input type="range" id="bp-input-a" min="-5" max="5" step="0.5" value="2.0">
+              </div>
+              <div class="slider-group">
+                <label>Input $b$: <span id="bp-val-b">1.0</span></label>
+                <input type="range" id="bp-input-b" min="-5" max="5" step="0.5" value="1.0">
+              </div>
+            </div>
+
+            <!-- Visual Graph Nodes Container -->
+            <div class="computation-graph-visual" id="comp-graph-nodes">
+              <!-- Rendered by JS: Nodes for a, b, c=a+b, d=b+1, e=c*d -->
+            </div>
+
+            <div class="graph-actions-bar" style="margin-top:16px; display:flex; gap:10px;">
+              <button class="btn btn-sm btn-primary" id="btn-bp-forward">▶ Run Forward Pass</button>
+              <button class="btn btn-sm btn-ghost" id="btn-bp-backward">⬅ Run Reverse Backprop</button>
+            </div>
+          </div>
+
+          <div class="lab-card glass-panel">
+            <div class="lab-card-header">
+              <h3>Reverse-Mode Gradient Accumulation (Slide 10 &amp; 11)</h3>
+            </div>
+            <div class="step-trace-box" id="bp-gradient-trace">
+              <div class="trace-title">Analytical Backprop Derivation:</div>
+              <div class="trace-line" id="bp-trace-e">$$\frac{\partial e}{\partial e} = 1.0$$</div>
+              <div class="trace-line" id="bp-trace-cd">$$\frac{\partial e}{\partial c} = d = 2.0, \quad \frac{\partial e}{\partial d} = c = 3.0$$</div>
+              <div class="trace-line" id="bp-trace-a">$$\frac{\partial e}{\partial a} = \frac{\partial e}{\partial c} \frac{\partial c}{\partial a} = 2.0 \times 1 = 2.0$$</div>
+              <div class="trace-line highlight" id="bp-trace-b">
+                $$\frac{\partial e}{\partial b} = \frac{\partial e}{\partial c}\frac{\partial c}{\partial b} + \frac{\partial e}{\partial d}\frac{\partial d}{\partial b} = 2.0(1) + 3.0(1) = 5.0$$
+              </div>
+            </div>
+            <div class="info-box" style="margin-top:16px;">
+              <div class="info-title">💡 The Branch-Sum Rule (Slide 9 &amp; 10)</div>
+              <p>When variable $b$ fans out into multiple intermediate nodes ($c$ and $d$), its total derivative sums the contributions along all downstream paths: $\frac{\partial e}{\partial b} = \frac{\partial e}{\partial c}\frac{\partial c}{\partial b} + \frac{\partial e}{\partial d}\frac{\partial d}{\partial b}$.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- TAB 5: Optimizer Arena (Slides 18–25) -->
+      <div class="opt-pane" id="pane-optimizers-zoo">
+        <div class="lab-layout-2col">
+          <div class="lab-card glass-panel">
+            <div class="lab-card-header">
+              <h3>🏎️ Slides 18–25: Optimizer Arena on Ravine Landscape</h3>
+            </div>
+            <p>Compare how different optimizers traverse an anisotropic loss ravine $J(\theta_1, \theta_2) = 0.08 \theta_1^2 + 1.2 \theta_2^2$:</p>
+            
+            <div class="optimizer-select-bar">
+              <div class="pg-toggle-group" id="opt-selector-group">
+                <button class="pg-toggle active" data-opt="sgd">SGD</button>
+                <button class="pg-toggle" data-opt="momentum">Momentum ($\gamma=0.9$)</button>
+                <button class="pg-toggle" data-opt="nesterov">Nesterov (NAG)</button>
+                <button class="pg-toggle" data-opt="adagrad">Adagrad</button>
+                <button class="pg-toggle" data-opt="adam">Adam</button>
+              </div>
+            </div>
+
+            <canvas id="opt-arena-canvas" width="440" height="280"></canvas>
+
+            <div class="gd-btn-row" style="margin-top:12px;">
+              <button class="btn btn-sm btn-primary" id="btn-opt-run">▶ Start Optimizer</button>
+              <button class="btn btn-sm btn-ghost" id="btn-opt-reset">Reset</button>
+            </div>
+          </div>
+
+          <div class="lab-card glass-panel">
+            <div class="lab-card-header">
+              <h3>Mathematical Dynamics &amp; Mechanics</h3>
+            </div>
+            <div class="opt-math-card" id="opt-math-detail">
+              <!-- Dynamically populated with optimizer formulas and exam notes -->
+            </div>
+            <div class="mle-metrics-box" style="margin-top:16px;">
+              <div class="m-box">
+                <span class="m-val" id="opt-cur-iter">0</span>
+                <span class="m-lbl">Iterations</span>
+              </div>
+              <div class="m-box">
+                <span class="m-val" id="opt-cur-loss">0.000</span>
+                <span class="m-lbl">Current Loss</span>
+              </div>
+              <div class="m-box">
+                <span class="m-val" id="opt-status-text">Ready</span>
+                <span class="m-lbl">Status</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- TAB 6: Weight Init & Normalization (Slides 33–44) -->
+      <div class="opt-pane" id="pane-init-norm">
+        <div class="lab-layout-2col">
+          <div class="lab-card glass-panel">
+            <div class="lab-card-header">
+              <h3>⚖️ Slides 33–39: Variance Propagation Across 10 Layers</h3>
+            </div>
+            <p>Why do we need variance-preserving initialization? Observe what happens to signal variance across depth:</p>
+            
+            <div class="init-toggles-bar">
+              <label>Initialization Scheme:</label>
+              <div class="pg-toggle-group" id="init-scheme-group">
+                <button class="pg-toggle" data-init="zero">Zero Init</button>
+                <button class="pg-toggle" data-init="normal">Normal $\mathcal{N}(0, 1)$</button>
+                <button class="pg-toggle" data-init="xavier">Xavier / Glorot</button>
+                <button class="pg-toggle active" data-init="kaiming">Kaiming / He (ReLU)</button>
+              </div>
+            </div>
+
+            <canvas id="init-variance-canvas" width="440" height="240"></canvas>
+            <div class="init-verdict" id="init-verdict-box" style="margin-top:12px;"></div>
+          </div>
+
+          <div class="lab-card glass-panel">
+            <div class="lab-card-header">
+              <h3>📊 Slides 41–44: Batch Normalization vs Layer Normalization</h3>
+            </div>
+            <div class="norm-comparison-toggle">
+              <div class="pg-toggle-group" id="norm-mode-group">
+                <button class="pg-toggle active" data-norm="batch">Batch Normalization (Across Batch $N$)</button>
+                <button class="pg-toggle" data-norm="layer">Layer Normalization (Across Features $D$)</button>
+              </div>
+            </div>
+
+            <canvas id="norm-matrix-canvas" width="440" height="200"></canvas>
+
+            <div class="norm-math-box" id="norm-math-box" style="margin-top:12px;">
+              <!-- Populated by JS -->
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+
+    <!-- ===================== CNN & ARCHITECTURES LAB (LECTURE 3) ===================== -->
+    <section class="section section-cnn-lab" id="section-cnn-lab">
+      <div class="modules-header">
+        <h2 class="section-title">Convolutional Neural Networks &amp; Landmark Architectures</h2>
+        <p class="section-desc">Interactive filter sliding, output geometry &amp; parameter counters, Sobel kernels, and comparative deep-dives into AlexNet, VGG, GoogLeNet, and ResNet.</p>
+      </div>
+
+      <div class="app-tabs-bar">
+        <button class="cnn-tab active" data-tab="cnn-calc">📐 Slides 18–25: Spatial Geometry &amp; Parameter Counter</button>
+        <button class="cnn-tab" data-tab="cnn-architectures">🏛️ Slides 31–42: Landmark Architectures Deep-Dive</button>
+        <button class="cnn-tab" data-tab="cnn-kernel">🔍 Slides 6–15: 2D Convolution &amp; Sobel Edge Filters</button>
+      </div>
+
+      <!-- CNN TAB 1: Geometry & Learnable Parameter Counter -->
+      <div class="cnn-pane active" id="pane-cnn-calc">
+        <div class="lab-layout-2col">
+          <div class="lab-card glass-panel">
+            <div class="lab-card-header">
+              <h3>📐 Dimension &amp; Learnable Parameter Calculator (Slide 24 &amp; 25)</h3>
+            </div>
+            
+            <div class="cnn-preset-bar">
+              <span style="font-size:0.8rem; color:var(--text-secondary);">Load Slide Preset:</span>
+              <div class="pg-toggle-group" id="cnn-preset-group">
+                <button class="pg-toggle active" data-preset="slide24">Slide 24 Example</button>
+                <button class="pg-toggle" data-preset="alex-conv1">AlexNet Conv1</button>
+                <button class="pg-toggle" data-preset="alex-conv2">AlexNet Conv2</button>
+                <button class="pg-toggle" data-preset="vgg-conv">VGG $3\times 3$</button>
+              </div>
+            </div>
+
+            <div class="cnn-calc-inputs" style="display:grid; grid-template-columns: 1fr 1fr; gap:12px; margin:16px 0;">
+              <div class="slider-group">
+                <label>Input Channels $C_{\text{in}}$: <span id="lbl-cin">3</span></label>
+                <input type="number" id="inp-cin" min="1" max="1024" value="3" class="pg-num-input">
+              </div>
+              <div class="slider-group">
+                <label>Input Height $H = W$: <span id="lbl-hin">32</span></label>
+                <input type="number" id="inp-hin" min="1" max="512" value="32" class="pg-num-input">
+              </div>
+              <div class="slider-group">
+                <label>Filter Kernel $F$: <span id="lbl-f">5</span></label>
+                <input type="number" id="inp-f" min="1" max="31" step="2" value="5" class="pg-num-input">
+              </div>
+              <div class="slider-group">
+                <label>Output Filters $C_{\text{out}}$: <span id="lbl-cout">10</span></label>
+                <input type="number" id="inp-cout" min="1" max="1024" value="10" class="pg-num-input">
+              </div>
+              <div class="slider-group">
+                <label>Stride $S$: <span id="lbl-s">1</span></label>
+                <input type="number" id="inp-s" min="1" max="10" value="1" class="pg-num-input">
+              </div>
+              <div class="slider-group">
+                <label>Zero-Padding $P$: <span id="lbl-p">2</span></label>
+                <input type="number" id="inp-p" min="0" max="20" value="2" class="pg-num-input">
+              </div>
+            </div>
+
+            <div class="formula">
+              \begin{aligned}
+              H' &= \left\lfloor \frac{H - F + 2P}{S} \right\rfloor + 1 \\
+              \text{Params} &= C_{\text{out}} \times (F \times F \times C_{\text{in}} + 1)
+              \end{aligned}
+            </div>
+          </div>
+
+          <div class="lab-card glass-panel">
+            <div class="lab-card-header">
+              <h3>Output Volume &amp; Parameter Breakdown</h3>
+            </div>
+            <div class="cnn-result-summary" id="cnn-calc-results">
+              <!-- Dynamically populated -->
+            </div>
+            <canvas id="cnn-grid-preview" width="440" height="220" style="margin-top:16px;"></canvas>
+          </div>
+        </div>
+      </div>
+
+      <!-- CNN TAB 2: Landmark Architectures Deep-Dive -->
+      <div class="cnn-pane" id="pane-cnn-architectures">
+        <div class="app-tabs-bar" style="margin-bottom:16px;">
+          <button class="arch-tab active" data-arch="alexnet">AlexNet (2012)</button>
+          <button class="arch-tab" data-arch="vgg">VGGNet (2014)</button>
+          <button class="arch-tab" data-arch="googlenet">GoogLeNet / Inception (2014)</button>
+          <button class="arch-tab" data-arch="resnet">ResNet (2015)</button>
+        </div>
+
+        <div class="arch-content-container" id="arch-display-pane">
+          <!-- Dynamically populated by JS -->
+        </div>
+      </div>
+
+      <!-- CNN TAB 3: 2D Convolution & Sobel Kernel Interactive Grid -->
+      <div class="cnn-pane" id="pane-cnn-kernel">
+        <div class="lab-layout-2col">
+          <div class="lab-card glass-panel">
+            <div class="lab-card-header">
+              <h3>🔍 2D Convolution &amp; Sobel Edge Filters (Slide 15)</h3>
+            </div>
+            <div class="kernel-selector-bar">
+              <span style="font-size:0.8rem; color:var(--text-secondary);">Select Kernel:</span>
+              <div class="pg-toggle-group" id="kernel-select-group">
+                <button class="pg-toggle active" data-kernel="sobelX">Sobel $G_x$ (Vertical Edges)</button>
+                <button class="pg-toggle" data-kernel="sobelY">Sobel $G_y$ (Horizontal Edges)</button>
+                <button class="pg-toggle" data-kernel="blur">Box Blur</button>
+                <button class="pg-toggle" data-kernel="sharpen">Sharpen</button>
+              </div>
+            </div>
+
+            <canvas id="conv-kernel-canvas" width="440" height="280"></canvas>
+            <p class="note-text" style="margin-top:10px; font-size:0.8rem; color:var(--text-muted);">
+              Move your mouse over the canvas to slide the $3\times 3$ filter window across the input patch. Watch the live dot product $w^T x + b$ compute the output activation value!
+            </p>
+          </div>
+
+          <div class="lab-card glass-panel">
+            <div class="lab-card-header">
+              <h3>Live Dot-Product $w^T x + b$ Calculation</h3>
+            </div>
+            <div class="kernel-matrix-display" id="kernel-matrix-display">
+              <!-- Dynamically populated -->
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Footer -->
+  <footer class="app-footer">
+    <div class="footer-content">
+      <span class="footer-brand">DeepLens Academy</span>
+      <span class="footer-sep">·</span>
+      <span class="footer-note">Leibniz Universität Hannover · Deep Learning Foundations (WS 2026/27)</span>
+    </div>
+  </footer>
+
+  <!-- KaTeX core and auto-render extension -->
+  <script src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js" crossorigin="anonymous"></script>
+  <script src="app.js?v=math1"></script>
+</body>
+</html>
